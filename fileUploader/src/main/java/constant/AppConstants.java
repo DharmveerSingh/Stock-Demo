@@ -9,6 +9,8 @@ public final class AppConstants {
 
 	// @Value("input.archivePath")
 	public static String ARCHIVE_PATH = "D:\\stockData\\arch\\";
+	
+	public static String UNPROCESSED_PATH = "D:\\stockData\\unprocessed\\";
 	public static String LATEST = "LATEST::";
 	
 	

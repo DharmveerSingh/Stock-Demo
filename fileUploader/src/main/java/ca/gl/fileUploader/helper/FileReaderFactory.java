@@ -20,7 +20,12 @@ public class FileReaderFactory {
 		case "txt":
 			reader= new TextReader(file);
 			break;
+			
+		case "csv":
+			reader= new CSVReader(file);
+			break;
 		default:
+			reader= new ETCReader(file);
 			;
 		}
 		return reader;

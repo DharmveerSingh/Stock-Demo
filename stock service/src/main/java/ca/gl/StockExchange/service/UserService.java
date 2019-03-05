@@ -2,6 +2,7 @@ package ca.gl.StockExchange.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -123,10 +124,14 @@ public class UserService {
 	}
 
 	public Mono<Boolean> disableUser(String userId) {
-		return userRepo.findById(userId).flatMap(user -> {
+		return userRepo.findById(userId).flatMap(updateUserActiveStatus()).switchIfEmpty(Mono.just(Boolean.FALSE));
+	}
+
+	private Function<? super User, ? extends Mono<? extends Boolean>> updateUserActiveStatus() {
+		return user -> {
 			user.setActive(Boolean.FALSE);
 			return userRepo.save(user).flatMap(u -> Mono.just(Boolean.TRUE)).switchIfEmpty(Mono.just(Boolean.FALSE));
-		}).switchIfEmpty(Mono.just(Boolean.FALSE));
+		};
 	}
 
 }

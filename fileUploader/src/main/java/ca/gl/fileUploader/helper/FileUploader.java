@@ -55,11 +55,25 @@ public class FileUploader implements Runnable {
 		case "txt":
 			saveAsStream(file, ext);
 			break;
-
+		case "csv":
+			saveAsStream(file, ext);
+			break;
+			
 		default:
+			removeFile(file, ext);
 			;
 		}
 
+	}
+
+	private void removeFile(File file2, String ext) {
+		FileReader reader = FileReaderFactory.getFileReader(file, ext);
+		try {
+			reader.readFileAsList();
+		} catch (OperationNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void saveAsStream(File inputFile, String ext) {

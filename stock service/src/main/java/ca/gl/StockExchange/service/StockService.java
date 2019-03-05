@@ -36,7 +36,6 @@ public class StockService {
 
 	private Function<? super StockHistoryList, ? extends Mono<? extends StockHistoryList>> todaysHistory() {
 		return stockHisList ->  {
-			
 			List<StockHistory> 	todaysList=stockHisList.getStockList().stream().filter(sh -> sh.getDate().getDayOfYear() ==LocalDateTime.now().getDayOfYear()).collect(Collectors.toList());
 			Collections.sort(todaysList);
 			stockHisList.setStockList(todaysList);

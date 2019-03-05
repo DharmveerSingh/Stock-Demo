@@ -30,4 +30,21 @@ public class Utils {
 
 		return temp;
 	}
+	
+	public static Path moveFileToUnProcessed(String fileName) {
+		Path temp = null;
+		try {
+			temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.UNPROCESSED_PATH
+					 +Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
+
+			if (temp != null) {
+				log.debug("File renamed and moved to unprocessed successfully");
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return temp;
+	}
 }
