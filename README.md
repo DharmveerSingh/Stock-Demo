@@ -14,4 +14,4 @@ Technologies:
 7. Java Script (UI)
 8. Ajax (UI)
 9. thymeleaf (UI)
-10. Couchbase DB(Database)
+10. Reactive Couchbase DB(Database)
