@@ -3,30 +3,45 @@ package ca.gl.StockExchange;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
-import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 
+/**
+ * @author dharamveer.singh
+ *
+ */
 @Configuration
-@EnableCouchbaseRepositories(basePackages = { "ca.gl.StockExchange" })
 public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
+	@Value("${spring.couchbase.bucket.name}")
+	private String bucket;
+	
+	@Value("${spring.couchbase.bucket.password}")
+	private String password;
+
+	@Value("${spring.couchbase.bootstrap-hosts}")
+	private String host;
+	
+	@Value("${spring.couchbase.username}")
+	private String username;
+	
 	@Override
 	protected List<String> getBootstrapHosts() {
-		return Arrays.asList("localhost:8091");
+		return Arrays.asList(host);
 	}
 
 	@Override
 	protected String getBucketName() {
-		return "Stock";
+		return bucket;
 	}
 
 	@Override
 	protected String getBucketPassword() {
-		return "Password";
+		return password;
 	}
 
 	protected String getUsername() {
-		return "Administrator";
+		return username;
 	}
 }

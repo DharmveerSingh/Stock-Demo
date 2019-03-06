@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.couchbase.core.mapping.Document;
 
 import com.couchbase.client.java.repository.annotation.Field;
@@ -55,5 +56,9 @@ public class User {
 
 	@Field("roles")
 	List<String> roles;
+	
+	@Version
+	@Field
+	private long version;
 
 }

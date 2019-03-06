@@ -3,9 +3,9 @@ package ca.gl.fileUploader.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.couchbase.core.mapping.Document;
 
 import com.couchbase.client.java.repository.annotation.Field;
@@ -73,6 +73,10 @@ public class Stock implements Serializable, Comparable<Stock> {
 	@Field
 	private Double openPrice;
 
+	@Version
+	@Field
+	private long version;
+	
 	public StockHistoryList toHistoryList() {
 		StockHistoryList list = new StockHistoryList();
 		StockHistory stockHistory = new StockHistory();

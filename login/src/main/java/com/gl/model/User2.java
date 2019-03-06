@@ -43,7 +43,7 @@ public class User2 {
 	private String lastName;
 
 	@Field
-	private int active;
+	private boolean active;
 
 	@Field
 	@Length(min = 5, message = "*Your password must have at least 5 characters")

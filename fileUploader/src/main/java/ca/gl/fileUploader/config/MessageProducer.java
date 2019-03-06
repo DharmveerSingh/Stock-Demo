@@ -14,7 +14,7 @@ public class MessageProducer {
 	@Value(value = "${message.topic.name}")
 	private String topicName;
 
-	public void sendGreetingMessage(Stock stock) {
+	public void sentStocks(Stock stock) {
 		stockKafkaTemplate.send(topicName, stock);
 	}
 }

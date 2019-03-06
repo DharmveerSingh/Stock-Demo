@@ -35,7 +35,6 @@ public class FileCheckerService {
 		while (true) {
 			files = base.listFiles();
 			if (files.length != 0) {
-				// System.out.println("File found in base dir. Going to process");
 				Arrays.stream(files).forEach(file -> {
 					try {
 						executor.execute(new FileUploader(file, repo, kafkaProducer,asyncService));

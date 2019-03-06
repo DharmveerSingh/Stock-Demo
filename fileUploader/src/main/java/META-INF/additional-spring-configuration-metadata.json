@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "spring.couchbase.username",
+  "type": "java.lang.String",
+  "description": "This is couchbase username"
+}]}

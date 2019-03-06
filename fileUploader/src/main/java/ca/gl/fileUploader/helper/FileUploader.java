@@ -83,7 +83,7 @@ public class FileUploader implements Runnable {
 
 		try (Stream<Stock> stream = reader.readFileAsStream();) {
 			List<Stock>stockList=stream.parallel().map(s -> {
-				kafkaProducer.sendGreetingMessage(s);
+				kafkaProducer.sentStocks(s);
 				return s;
 			}).collect(Collectors.toList());
 			long endTime = System.currentTimeMillis();
@@ -116,7 +116,7 @@ public class FileUploader implements Runnable {
 				long startTime = System.currentTimeMillis();
 				list = reader.readFileAsList();
 				list.stream().forEach(st -> {
-					kafkaProducer.sendGreetingMessage(st);
+					kafkaProducer.sentStocks(st);
 				});
 				long endTime = System.currentTimeMillis();
 				log.info("Finished with kafka with file: {}, time taken {} milliseconds", file.getAbsolutePath(), (endTime-startTime));
@@ -131,7 +131,6 @@ public class FileUploader implements Runnable {
 				}
 				else
 					log.error("Asynch service is null");
-				//repo.saveAll(list).subscribe();
 				log.info("Finished writing to database file: {} with extension {}", file.getAbsolutePath(), ext);
 			} catch (Exception e) {
 				e.printStackTrace();
