@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.gpch</groupId>
-	<artifactId>login</artifactId>
+	<artifactId>login-mvc-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>login</name>
+	<name>login mvc app</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -29,7 +29,7 @@
 
 		<dependency>
 			<groupId>ca.gl</groupId>
-			<artifactId>stock-uploader</artifactId>
+			<artifactId>stock-uploader-service</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 

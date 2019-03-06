@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.gl</groupId>
-	<artifactId>stock-uploader</artifactId>
+	<artifactId>stock-uploader-service</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>stock-uploader</name>
 	<description>Upload stock data</description>

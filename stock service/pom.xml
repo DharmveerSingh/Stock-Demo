@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.gl</groupId>
-	<artifactId>Stock-Exchange</artifactId>
+	<artifactId>Stock-reactive-service</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>Stock-Exchange</name>
+	<name>Stock-reactive-service</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>jar</packaging>
 
@@ -27,7 +27,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>ca.gl</groupId>
-			<artifactId>stock-uploader</artifactId>
+			<artifactId>stock-uploader-service</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
