@@ -1,5 +1,7 @@
 package ca.gl.fileUploader.Schedular;
 
+import java.util.function.Consumer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,12 @@ import constant.AppConstants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Scheduled task class
+ * 
+ * @author dharamveer.singh
+ *
+ */
 @Component
 public class ScheduledTasks {
 
@@ -25,23 +33,36 @@ public class ScheduledTasks {
 
 	private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-	 @Scheduled(cron = "0 0 22 * * MON-FRI")
-	//@Scheduled(initialDelay = 10000, fixedRate = 5000)
+	/**
+	 * this method will run at 10 PM of every weekday to store historycal data about
+	 * stocks
+	 */
+	@Scheduled(cron = "0 0 22 * * MON-FRI")
 	public void reportCurrentTime() {
 
 		Flux<Stock> data = stockRepo.findAllLatest();
 		data.doOnNext(stock -> insertIntoDB(stock)).doOnError(err -> err.printStackTrace()).subscribe();
 	}
 
+	/**
+	 * Insert stock data to db
+	 * 
+	 * @param stock
+	 */
 	private void insertIntoDB(Stock stock) {
-		Mono<StockHistoryList> stockHistory = historyListRepo.findById(AppConstants.DAILY_HISTORY + stock.getStockSymbol());
-		stockHistory.doOnNext(data -> {
-			data.getStockList().add(stock.toHistory());
-			data.setCount(data.getCount()+1);
-			historyListRepo.save(data).doOnNext(d -> log.info("Appeding data history: " + data.getStockId()))
-					.subscribe();
-		}).switchIfEmpty(historyListRepo.save(stock.toHistoryList()))
+		Mono<StockHistoryList> stockHistory = historyListRepo
+				.findById(AppConstants.DAILY_HISTORY + stock.getStockSymbol());
+		stockHistory.doOnNext(appedHistory(stock)).switchIfEmpty(historyListRepo.save(stock.toHistoryList()))
 				.doOnNext(d -> log.info("Data going to save is: " + d)).subscribe();
 
+	}
+
+	private Consumer<? super StockHistoryList> appedHistory(Stock stock) {
+		return data -> {
+			data.getStockList().add(stock.toHistory());
+			data.setCount(data.getCount() + 1);
+			historyListRepo.save(data).doOnNext(d -> log.info("Appeding data history: " + data.getStockId()))
+					.subscribe();
+		};
 	}
 }

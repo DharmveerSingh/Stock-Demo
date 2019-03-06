@@ -18,21 +18,21 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.service.AsyncService;
 
 //@Component
+/**
+ * class to upload files
+ * @author dharamveer.singh
+ *
+ */
 public class FileUploader implements Runnable {
 	private File file;
 	private Logger log = LoggerFactory.getLogger(FileUploader.class);
 	
 	@Autowired
-	private StockRepository stockRepository;
-
-	@Autowired
 	private AsyncService asyncService;
 	
-	private StockRepository repo;
 	private MessageProducer kafkaProducer;
 
 	public FileUploader(File file, StockRepository repo, MessageProducer kafkaProducer, AsyncService asyncService) throws IOException {
-		this.repo = repo;
 		this.file = file;
 		this.kafkaProducer = kafkaProducer;
 		this.asyncService= asyncService;
@@ -71,7 +71,6 @@ public class FileUploader implements Runnable {
 		try {
 			reader.readFileAsList();
 		} catch (OperationNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -95,10 +94,6 @@ public class FileUploader implements Runnable {
 				else
 					log.error("Asynch service is null");
 				
-			//repo.saveAll(stockList).subscribe();
-			
-			
-			
 			log.info("Finished reading file: {}, time taken {} milliseconds", file.getAbsolutePath(), (endTime - startTime));
 		} catch (OperationNotSupportedException e) {
 			e.printStackTrace();

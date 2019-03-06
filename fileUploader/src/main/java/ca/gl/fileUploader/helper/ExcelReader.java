@@ -21,6 +21,12 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
 import constant.AppConstants;
 
+/**
+ * Excel fle reader
+ * 
+ * @author dharamveer.singh
+ *
+ */
 public class ExcelReader implements FileReader {
 	private File file;
 
@@ -106,7 +112,6 @@ public class ExcelReader implements FileReader {
 	@Override
 	public Stream<Stock> readFileAsStream() throws OperationNotSupportedException {
 		throw new OperationNotSupportedException("don't have stream support yet");
-		// return
 	}
 
 }

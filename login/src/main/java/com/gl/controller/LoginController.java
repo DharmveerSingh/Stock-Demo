@@ -18,6 +18,7 @@ import com.gl.model.User2;
 import com.gl.service.UserService;
 
 /**
+ * The login controller
  * @author dharamveer.singh
  *
  */

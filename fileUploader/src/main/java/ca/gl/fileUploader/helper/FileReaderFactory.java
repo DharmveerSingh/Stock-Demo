@@ -2,6 +2,10 @@ package ca.gl.fileUploader.helper;
 
 import java.io.File;
 
+/**Factory of File reader object base on file type
+ * @author dharamveer.singh
+ *
+ */
 public class FileReaderFactory {
 
 	private FileReaderFactory() {

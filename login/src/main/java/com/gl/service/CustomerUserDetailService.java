@@ -24,6 +24,12 @@ public class CustomerUserDetailService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepo;
 
+	/*
+	 * (non-Javadoc) get User by email
+	 * 
+	 * @see org.springframework.security.core.userdetails.UserDetailsService#
+	 * loadUserByUsername(java.lang.String)
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -35,9 +41,9 @@ public class CustomerUserDetailService implements UserDetailsService {
 			List<String> authorities = new ArrayList<String>();
 			authorities.add("ADMIN");
 			userDetails = new UserDetailsImpl(u.getId(), u.getPassword(),
-					authorities.toArray(new String[authorities.size()]),u.isActive());
+					authorities.toArray(new String[authorities.size()]), u.isActive());
 		}
- 
+
 		return userDetails;
 	}
 

@@ -7,6 +7,11 @@ import javax.naming.OperationNotSupportedException;
 
 import ca.gl.fileUploader.model.Stock;
 
+/**
+ * File reader interface
+ * @author dharamveer.singh
+ *
+ */
 public interface FileReader {
 
 	List<Stock> readFileAsList() throws OperationNotSupportedException;

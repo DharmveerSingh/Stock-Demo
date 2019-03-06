@@ -34,6 +34,11 @@ public class AsyncService {
 	@Autowired
 	private StockHistoryListRepository listRepo;
 
+	/**
+	 * Save stock list
+	 * 
+	 * @param stockList
+	 */
 	@Async
 	public void saveStocksUpdateHis(List<Stock> stockList) {
 		stockRepo.saveAll(stockList).subscribe();
@@ -43,12 +48,25 @@ public class AsyncService {
 		});
 	}
 
+	/**
+	 * Save or update regular history
+	 * 
+	 * @param stock
+	 * @param stockHisId
+	 */
 	private void saveOrUpdateRegularHist(final Stock stock, final String stockHisId) {
 		Mono<StockHistoryList> stockHistory = listRepo.findById(stockHisId);
 		stockHistory.flatMap(updateStockHisList(stock, stockHisId)).switchIfEmpty(createStockHisList(stock, stockHisId))
 				.subscribe();
 	}
 
+	/**
+	 * Update stock history list
+	 * 
+	 * @param stock
+	 * @param stockHisId
+	 * @return
+	 */
 	private Function<? super StockHistoryList, ? extends Mono<? extends StockHistoryList>> updateStockHisList(
 			final Stock stock, final String stockHisId) {
 		return data -> {
@@ -59,10 +77,24 @@ public class AsyncService {
 		};
 	}
 
+	/**
+	 * create stock history list
+	 * 
+	 * @param stock
+	 * @param stockHisId
+	 * @return
+	 */
 	private Mono<StockHistoryList> createStockHisList(final Stock stock, final String stockHisId) {
 		return listRepo.save(stock.toRegularHistoryList()).doOnError(handleCreationErrors(stock, stockHisId));
 	}
 
+	/**
+	 * Handle creation errors
+	 * 
+	 * @param stock
+	 * @param stockHisId
+	 * @return
+	 */
 	private Consumer<? super Throwable> handleCreationErrors(final Stock stock, final String stockHisId) {
 		return err -> {
 			log.error("Got error while Saving: {}, , errorclass {}", err.getCause(), err.getLocalizedMessage());
@@ -73,6 +105,13 @@ public class AsyncService {
 		};
 	}
 
+	/**
+	 * Handle updation errors
+	 * 
+	 * @param stock
+	 * @param stockHisId
+	 * @return
+	 */
 	private Consumer<? super Throwable> handleUpdationErrors(final Stock stock, final String stockHisId) {
 		return err -> {
 			log.error("Got error while updating: {}, , errorclass {}", err.getCause(), err.getLocalizedMessage());

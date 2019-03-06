@@ -10,6 +10,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import ca.gl.fileUploader.error.CustomAsyncExceptionHandler;
 
+/**Async configuration class
+ * @author dharamveer.singh
+ *
+ */
 @Configuration
 @EnableAsync
 public class SpringAsyncConfig implements AsyncConfigurer {
@@ -22,10 +26,6 @@ public class SpringAsyncConfig implements AsyncConfigurer {
 	 @Override
 	    public Executor getAsyncExecutor() {
 		 ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		/*
-		 * executor.setCorePoolSize(10); executor.setMaxPoolSize(100);
-		 * executor.setThreadNamePrefix("default_task_executor_thread");
-		 */
 	        executor.initialize();
 		 
 	        return executor;

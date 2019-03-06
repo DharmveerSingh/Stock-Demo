@@ -30,10 +30,19 @@ public class StockService {
 		return stockRepo.findAllLatest();
 	}
 
+	/**
+	 * Get today's history
+	 * @param stockHistoryId
+	 * @return
+	 */
 	public Mono<StockHistoryList> getTodaysHistory(String stockHistoryId) {
 		return stockHisListRepo.findById(stockHistoryId).flatMap(todaysHistory()).switchIfEmpty(Mono.empty());
 	}
 
+	/**
+	 * Filter todays history from week history
+	 * @return
+	 */
 	private Function<? super StockHistoryList, ? extends Mono<? extends StockHistoryList>> todaysHistory() {
 		return stockHisList ->  {
 			List<StockHistory> 	todaysList=stockHisList.getStockList().stream().filter(sh -> sh.getDate().getDayOfYear() ==LocalDateTime.now().getDayOfYear()).collect(Collectors.toList());
@@ -44,6 +53,10 @@ public class StockService {
 		};
 	}
 
+	/**Get week history
+	 * @param stockHistoryId
+	 * @return
+	 */
 	public Mono<StockHistoryList> getWeeksHistory(String stockHistoryId) {
 		return stockHisListRepo.findById(stockHistoryId).switchIfEmpty(Mono.empty());
 		}

@@ -14,6 +14,11 @@ import ca.gl.fileUploader.model.StockHistoryList;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Stock Controller
+ * @author dharamveer.singh
+ *
+ */
 @RestController
 @RequestMapping("/stock")
 public class StockController {

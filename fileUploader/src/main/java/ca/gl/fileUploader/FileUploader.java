@@ -14,6 +14,13 @@ import ca.gl.fileUploader.reader.FileReader;
 import ca.gl.fileUploader.reader.FileReaderFactory;
 import reactor.core.publisher.Flux;
 
+/**
+ * this class will create a thread for each file which will be responsible for
+ * processing file
+ * 
+ * @author dharamveer.singh
+ *
+ */
 @Component
 @Scope("prototype")
 public class FileUploader implements Runnable {
@@ -27,23 +34,23 @@ public class FileUploader implements Runnable {
 
 	private StockRepository repo;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param file
+	 * @param repo
+	 * @throws IOException
+	 */
 	public FileUploader(File file, StockRepository repo) throws IOException {
 		this.repo = repo;
 		this.filePath = file.getCanonicalPath();
-		System.out.println("Repo: " + stockRepository);
-
 	}
 
+	@Override
 	public void run() {
-		System.out.println("Repo: " + stockRepository);
-
-		System.out.println("Going to process: " + filePath);
 		FileReader reader = FileReaderFactory.getFileReader(filePath);
-
 		if (reader != null) {
 			List<Stock> list = reader.readFile();
-
-			System.out.println("Saving data");
 			try {
 				Flux<Stock> saved = repo.saveAll(list);
 				saved.doOnEach(stock -> System.out.println(stock))
@@ -51,7 +58,6 @@ public class FileUploader implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println("Data saved");
 		}
 	}
 }

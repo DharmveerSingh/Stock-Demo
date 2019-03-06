@@ -30,12 +30,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new CustomerUserDetailService();
 	}
 
+	/*
+	 * (non-Javadoc) configure userservice with Password encoder
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.config.
+	 * annotation.authentication.builders.AuthenticationManagerBuilder)
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		UserDetailsService userDetailsService = mongoUserDetails();
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 
+	/*
+	 * Configure spring security (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.config.
+	 * annotation.web.builders.HttpSecurity)
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
@@ -47,6 +61,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().accessDeniedPage("/access-denied");
 	}
 
+	/*
+	 * Configure static resources (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.config.annotation.web.configuration.
+	 * WebSecurityConfigurerAdapter#configure(org.springframework.security.config.
+	 * annotation.web.builders.WebSecurity)
+	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/jsp/**");

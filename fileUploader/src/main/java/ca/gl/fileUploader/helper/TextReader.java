@@ -16,6 +16,10 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
 import constant.AppConstants;
 
+/**Class for reading text files
+ * @author dharamveer.singh
+ *
+ */
 public class TextReader implements FileReader {
 	private Logger log = LoggerFactory.getLogger(TextReader.class);
 	private File file;

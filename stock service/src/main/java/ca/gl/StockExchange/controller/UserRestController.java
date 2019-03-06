@@ -1,8 +1,5 @@
 package ca.gl.StockExchange.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -22,6 +19,11 @@ import ca.gl.StockExchange.responses.UserResponse;
 import ca.gl.StockExchange.service.UserService;
 import reactor.core.publisher.Mono;
 
+/**
+ * User controller
+ * @author dharamveer.singh
+ *
+ */
 @RestController
 @RequestMapping("/user")
 public class UserRestController {

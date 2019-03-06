@@ -16,6 +16,10 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
 import constant.AppConstants;
 
+/**CSV file reader
+ * @author dharamveer.singh
+ *
+ */
 public class CSVReader implements FileReader {
 	private Logger log = LoggerFactory.getLogger(CSVReader.class);
 	private File file;

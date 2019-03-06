@@ -41,27 +41,26 @@ import ca.gl.fileUploader.model.Stock;
 public class UserService {
 
 	private Logger log = LoggerFactory.getLogger(UserService.class);
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@Value("${stock.exchange.baseURL}")
 	private String seBaseUrl;
-	
+
 	@Value("${stock.exchange.user.getUser}")
 	private String seGetUser;
-	
+
 	@Value("${stock.exchange.user.disable}")
 	private String seDisableUser;
 	@Value("${stock.exchange.userStocks.purchase}")
 	private String seUserPurchase;
-	
+
 	@Value("${stock.exchange.latestStocks}")
 	private String seLatestStocks;
-	
+
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	
 	@Autowired
 	private UserRepository repo;
 
@@ -70,17 +69,37 @@ public class UserService {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
+	/**
+	 * get user by email
+	 * 
+	 * @param email
+	 * @return
+	 */
 	public Optional<User> findUserByEmail(String email) {
 		return repo.findById(email);
 	}
 
+	/**
+	 * Save user
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public User saveUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setActive(Boolean.TRUE);
 		user.setRoles(Arrays.asList("ADMIN"));
 		return repo.save(user);
 	}
-	
+
+	/**
+	 * get data by pagination
+	 * 
+	 * @param request
+	 * @param principal
+	 * @param session
+	 * @return
+	 */
 	public ModelAndView getModelAndView(HttpServletRequest request, Principal principal, HttpSession session) {
 		String offsetString = request.getParameter(AppConstants.PARAM_OFFSET);
 		String pageSizeString = request.getParameter(AppConstants.PARAM_PAGE_SIZE);
@@ -91,26 +110,35 @@ public class UserService {
 			offset = Integer.parseInt(offsetString) * pagesize;
 			pagesize = offset + pagesize;
 		} else {
-			offset = 0;//Default offset
-			pagesize = 20;//default page size
+			offset = 0;// Default offset
+			pagesize = 20;// default page size
 		}
-		
+
 		return getModelAndView(getLatestStocksFromChache(offset, pagesize), getUserStocks(principal), session);
 	}
 
-	private ModelAndView getModelAndView(List<Stock> latestStocks, List<UserStockResponse> userStockList, HttpSession session) {
+	/**
+	 * get home page for user by email
+	 * 
+	 * @param latestStocks
+	 * @param userStockList
+	 * @param session
+	 * @return
+	 */
+	private ModelAndView getModelAndView(List<Stock> latestStocks, List<UserStockResponse> userStockList,
+			HttpSession session) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Optional<User> oUser = findUserByEmail(auth.getName());
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject(AppConstants.USER_STOCK_LIST, userStockList);
-		if(!oUser.isPresent()) {
+		if (!oUser.isPresent()) {
 			session.invalidate();
 			modelAndView.setViewName("redirect:login");
 			return modelAndView;
 		}
 		User user = oUser.get();
-		StringBuilder userMesBuilder=new StringBuilder();
-		
+		StringBuilder userMesBuilder = new StringBuilder();
+
 		modelAndView.addObject(AppConstants.WELCOME,
 				userMesBuilder.append(AppConstants.Welcome_MSG).append(user.getName()).append(AppConstants.SPACE)
 						.append(user.getLastName()).append(AppConstants.OPENING_BRACES).append(user.getEmail())
@@ -122,6 +150,12 @@ public class UserService {
 		return modelAndView;
 	}
 
+	/**
+	 * get all stocks purchased by user
+	 * 
+	 * @param principal
+	 * @return
+	 */
 	private List<UserStockResponse> getUserStocks(Principal principal) {
 		String url = seBaseUrl + seUserPurchase + "?user=" + principal.getName();
 
@@ -141,8 +175,15 @@ public class UserService {
 		return response;
 	}
 
+	/**
+	 * Get latest stocks from cache in paginated way
+	 * 
+	 * @param offset
+	 * @param pagesize
+	 * @return
+	 */
 	private List<Stock> getLatestStocksFromChache(int offset, int pagesize) {
-		
+
 		if (CACHE.size() == 0) {
 			updateChache();
 		}
@@ -152,41 +193,59 @@ public class UserService {
 			stockNameList = STOCKNAMES.subList(offset, pagesize);
 			stockNameList.stream().forEach(key -> list.add(CACHE.get(key)));
 		} else {
-			stockNameList = STOCKNAMES.subList(0, STOCKNAMES.size() <20 ?STOCKNAMES.size():20);
+			stockNameList = STOCKNAMES.subList(0, STOCKNAMES.size() < 20 ? STOCKNAMES.size() : 20);
 			stockNameList.stream().forEach(key -> list.add(CACHE.get(key)));
-			}
+		}
 		return list;
 	}
+
+	/**
+	 * update cache from database
+	 */
 	public void updateChache() {
 		String url = seBaseUrl + seLatestStocks;
 		Stock[] stockList = restTemplate.getForObject(url, Stock[].class);
-		if(stockList.length >0) {
-		Arrays.stream(stockList).forEach(st -> {
-			STOCKNAMES.add(st.getStockID());
-			CACHE.put(st.getStockID(),st);
-		});
+		if (stockList.length > 0) {
+			Arrays.stream(stockList).forEach(st -> {
+				STOCKNAMES.add(st.getStockID());
+				CACHE.put(st.getStockID(), st);
+			});
 		}
 	}
-	
+
+	/**
+	 * Add records to cache after microservices starts
+	 */
 	@PostConstruct
 	public void addRecordsToCache() {
-		log.info("Going to update cache: "+ STOCKNAMES.size());
+		log.info("Going to update cache: " + STOCKNAMES.size());
 		updateChache();
-		log.info("Updated cache to: "+ STOCKNAMES.size());
+		log.info("Updated cache to: " + STOCKNAMES.size());
 	}
 
-	public User getUser(String userId ) {
-		String url= seBaseUrl + seGetUser+userId ;
+	/**
+	 * get user
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public User getUser(String userId) {
+		String url = seBaseUrl + seGetUser + userId;
 		User user = restTemplate.getForObject(url, User.class);
-		log.info("Get user for {} result: {}"+ userId, user);
+		log.info("Get user for {} result: {}" + userId, user);
 		return user;
-		
+
 	}
 
+	/**
+	 * disable user
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	public Boolean disable(String userId) {
-		String url= seBaseUrl + seDisableUser+userId ;
+		String url = seBaseUrl + seDisableUser + userId;
 		return restTemplate.getForObject(url, Boolean.class);
-		
+
 	}
 }
-

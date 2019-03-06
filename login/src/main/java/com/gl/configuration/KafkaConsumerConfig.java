@@ -16,6 +16,12 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import ca.gl.fileUploader.model.Stock;
 
+/**
+ * the kafka consumer config
+ * 
+ * @author dharamveer.singh
+ *
+ */
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {

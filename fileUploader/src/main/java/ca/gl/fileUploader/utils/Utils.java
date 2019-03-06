@@ -11,14 +11,26 @@ import org.slf4j.LoggerFactory;
 
 import constant.AppConstants;
 
+/**
+ * Utility class
+ * 
+ * @author dharamveer.singh
+ *
+ */
 public class Utils {
 	private static final Logger log = LoggerFactory.getLogger(Utils.class);
 
+	/**
+	 * Move given file to archive directory
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static Path moveFileToArch(String fileName) {
 		Path temp = null;
 		try {
 			temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.ARCHIVE_PATH
-					 +Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
+					+ Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
 
 			if (temp != null) {
 				log.debug("File renamed and moved successfully");
@@ -30,12 +42,18 @@ public class Utils {
 
 		return temp;
 	}
-	
+
+	/**
+	 * Move files to unprocessed dir
+	 * 
+	 * @param fileName
+	 * @return
+	 */
 	public static Path moveFileToUnProcessed(String fileName) {
 		Path temp = null;
 		try {
 			temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.UNPROCESSED_PATH
-					 +Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
+					+ Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
 
 			if (temp != null) {
 				log.debug("File renamed and moved to unprocessed successfully");

@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 
 import ca.gl.fileUploader.model.Stock;
 
+/**
+ * Listen kafka message and add it to cache
+ * @author dharamveer.singh
+ *
+ */
 @Component
 public class MessageListener {
 

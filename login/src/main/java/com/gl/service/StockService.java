@@ -14,47 +14,59 @@ import constant.AppConstants;
 
 @Service
 public class StockService {
-	
+
 	@Value("${stock.exchange.baseURL}")
 	private String seBaseUrl;
-	
+
 	@Value("${stock.exchange.stock.today.history}")
 	private String seTodayHistory;
-	
+
 	@Value("${stock.exchange.stock.week.history}")
 	private String seWeeksHistory;
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
+	/**
+	 * Get todays history by stock symbol
+	 * 
+	 * @param stockSymbol
+	 * @return
+	 */
 	public StockHistoryList getTodaysHistory(String stockSymbol) {
-		String url = seBaseUrl + seTodayHistory + AppConstants.REGULAR_HISTORY+stockSymbol;
-		ResponseEntity<StockHistoryList> todaysHistoryEntity=restTemplate.getForEntity(url, StockHistoryList.class);
+		String url = seBaseUrl + seTodayHistory + AppConstants.REGULAR_HISTORY + stockSymbol;
+		ResponseEntity<StockHistoryList> todaysHistoryEntity = restTemplate.getForEntity(url, StockHistoryList.class);
 		StockHistoryList response;
-		
-		if(todaysHistoryEntity.hasBody())
-			response= todaysHistoryEntity.getBody();
+
+		if (todaysHistoryEntity.hasBody())
+			response = todaysHistoryEntity.getBody();
 		else {
-			response=new StockHistoryList();
+			response = new StockHistoryList();
 			response.setStockSymbol(stockSymbol);
 			response.setCount(0);
-			response.setStockId(AppConstants.LATEST+stockSymbol);
+			response.setStockId(AppConstants.LATEST + stockSymbol);
 			response.setStockList(new ArrayList<StockHistory>());
 		}
 		return response;
 	}
 
+	/**
+	 * Get weeks history for stockSymbol
+	 * 
+	 * @param stockSymbol
+	 * @return
+	 */
 	public StockHistoryList getWeeksHistory(String stockSymbol) {
-		String url = seBaseUrl + seWeeksHistory + AppConstants.REGULAR_HISTORY+stockSymbol;
-		ResponseEntity<StockHistoryList> weeksHistoryEntity=restTemplate.getForEntity(url, StockHistoryList.class);
+		String url = seBaseUrl + seWeeksHistory + AppConstants.REGULAR_HISTORY + stockSymbol;
+		ResponseEntity<StockHistoryList> weeksHistoryEntity = restTemplate.getForEntity(url, StockHistoryList.class);
 		StockHistoryList response;
-		
-		if(weeksHistoryEntity.hasBody())
-			response= weeksHistoryEntity.getBody();
+
+		if (weeksHistoryEntity.hasBody())
+			response = weeksHistoryEntity.getBody();
 		else {
-			response=new StockHistoryList();
+			response = new StockHistoryList();
 			response.setStockSymbol(stockSymbol);
 			response.setCount(0);
-			response.setStockId(AppConstants.LATEST+stockSymbol);
+			response.setStockId(AppConstants.LATEST + stockSymbol);
 			response.setStockList(new ArrayList<StockHistory>());
 		}
 		return response;

@@ -13,6 +13,10 @@ import com.gl.service.StockService;
 
 import ca.gl.fileUploader.model.StockHistoryList;
 
+/**The stock controller
+ * @author dharamveer.singh
+ *
+ */
 @Controller
 @RequestMapping("/stock")
 public class StockController {

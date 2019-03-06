@@ -10,6 +10,7 @@ import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import lombok.val;
 
 /**
+ * Couchbase configuration class
  * @author dharamveer.singh
  *
  */
