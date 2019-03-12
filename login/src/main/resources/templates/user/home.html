@@ -77,7 +77,10 @@
 							
 								<td>
 									<button type="button" class="btn btn-primary"
-										th:onclick="|removeStock('${username}','${userStock.userStockId}')|">Withdraw</button>
+										th:attr="onclick=|removeStock('${username}','${userStock.userStockId}')|">Withdraw</button>
+									
+										<!-- <button type="button" class="btn btn-primary"
+										th:onclick="'javascript:removeStock(' + ${username} + ',' + ${userStock.userStockId} +')'">Withdraw</button> -->
 								</td>
 							</tr>
 							</tbody>
@@ -129,14 +132,14 @@
  -->
 								<td>
 									<button type="button" class="btn btn-primary"
-										th:onclick="|purchase('${stock.stockSymbol}', '${stock.price}','${stock.stockSymbol}')|">Purchase</button>
+										th:attr="onclick=|purchase('${stock.stockSymbol}', '${stock.price}','${stock.stockSymbol}')|">Purchase</button>
 								</td>
 								<td>
-									<button type="button" th:onclick="${'window.location.href=''/stock/todaysHistory?stockSymbol=' + stock.stockSymbol + ''''}"
+									<button type="button" th:attr="onclick=${'window.location.href=''/stock/todaysHistory?stockSymbol=' + stock.stockSymbol + ''''}"
 									 class="btn btn-primary" >Today's History</button>
 								</td>
 								<td>
-									<button type="button" th:onclick="${'window.location.href=''/stock/weeksHistory?stockSymbol=' + stock.stockSymbol + ''''}"
+									<button type="button" th:attr="onclick=${'window.location.href=''/stock/weeksHistory?stockSymbol=' + stock.stockSymbol + ''''}"
 									 class="btn btn-primary" >Week's History</button>
 								</td>
 							</tr>

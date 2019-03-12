@@ -14,13 +14,16 @@ import com.gl.model.User;
 import com.gl.model.UserDetailsImpl;
 import com.gl.repository.UserRepository;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author dharamveer.singh
+ * The Class CustomerUserDetailService.
  *
+ * @author dharamveer.singh
  */
 @Service
 public class CustomerUserDetailService implements UserDetailsService {
 
+	/** The user repo. */
 	@Autowired
 	private UserRepository userRepo;
 

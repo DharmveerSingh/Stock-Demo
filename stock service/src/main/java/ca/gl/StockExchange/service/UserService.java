@@ -21,21 +21,29 @@ import ca.gl.StockExchange.responses.UserResponse;
 import ca.gl.StockExchange.utility.Utils;
 import reactor.core.publisher.Mono;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserService.
+ */
 @Service
 public class UserService {
+	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+	/** The user repo. */
 	@Autowired
 	private UserRepository userRepo;
 
+	/** The us stock list repo. */
 	@Autowired
 	private UserStockListRepository usStockListRepo;
 
 	/**
-	 * User signup
-	 * 
-	 * @param user
-	 * @return
+	 * User signup.
+	 *
+	 * @param user the user
+	 * @return the mono
 	 */
 	public Mono<UserResponse> signUp(User user) {
 		return userRepo.existsById(AppConstants.USER_PREFIX + user.getEmail())
@@ -44,11 +52,11 @@ public class UserService {
 	}
 
 	/**
-	 * Create user if not exist
-	 * 
-	 * @param user
-	 * @param isFound
-	 * @return
+	 * Create user if not exist.
+	 *
+	 * @param user the user
+	 * @param isFound the is found
+	 * @return the mono
 	 */
 	private Mono<UserResponse> createIfNotExist(User user, boolean isFound) {
 		final String username = AppConstants.USER_PREFIX + user.getEmail();
@@ -78,20 +86,20 @@ public class UserService {
 	}
 
 	/**
-	 * call Validate user
-	 * 
-	 * @param user
-	 * @return
+	 * call Validate user.
+	 *
+	 * @param user the user
+	 * @return the mono
 	 */
 	public Mono<UserResponse> validateUser(User user) {
 		return Mono.just(validate(user));
 	}
 
 	/**
-	 * Validae user
-	 * 
-	 * @param user
-	 * @return
+	 * Validae user.
+	 *
+	 * @param user the user
+	 * @return the user response
 	 */
 	private UserResponse validate(User user) {
 		UserResponse res = new UserResponse();
@@ -104,10 +112,10 @@ public class UserService {
 	}
 
 	/**
-	 * Save user stocks
-	 * 
-	 * @param us
-	 * @return
+	 * Save user stocks.
+	 *
+	 * @param us the us
+	 * @return the mono
 	 */
 	public Mono<UserStockList> saveUserStock(UserStock us) {
 		return usStockListRepo.findById(AppConstants.PURCHASE_PREFIX + us.getUserId())
@@ -115,11 +123,11 @@ public class UserService {
 	}
 
 	/**
-	 * Update User stock list
-	 * 
-	 * @param us
-	 * @param usl
-	 * @return
+	 * Update User stock list.
+	 *
+	 * @param us the us
+	 * @param usl the usl
+	 * @return the mono
 	 */
 	private Mono<UserStockList> updateUSL(UserStock us, UserStockList usl) {
 		if (usl != null) {
@@ -133,10 +141,10 @@ public class UserService {
 	}
 
 	/**
-	 * Create user stock list
-	 * 
-	 * @param us
-	 * @return
+	 * Create user stock list.
+	 *
+	 * @param us the us
+	 * @return the mono<? extends user stock list>
 	 */
 	private Mono<? extends UserStockList> createUserStockList(UserStock us) {
 		List<UserStock> list = new ArrayList<UserStock>();
@@ -146,21 +154,21 @@ public class UserService {
 	}
 
 	/**
-	 * Get user stock list
-	 * 
-	 * @param username
-	 * @return
+	 * Get user stock list.
+	 *
+	 * @param username the username
+	 * @return the user stock
 	 */
 	public Mono<UserStockList> getUserStock(String username) {
 		return usStockListRepo.findById(AppConstants.PURCHASE_PREFIX + username);
 	}
 
 	/**
-	 * Remove user stock list
-	 * 
-	 * @param userStockId
-	 * @param stockId
-	 * @return
+	 * Remove user stock list.
+	 *
+	 * @param userStockId the user stock id
+	 * @param stockId the stock id
+	 * @return the mono
 	 */
 	public Mono<UserStockList> removeUserStock(String userStockId, String stockId) {
 		return usStockListRepo.findById(userStockId).flatMap(usStock -> removeStock(stockId, usStock));
@@ -168,11 +176,11 @@ public class UserService {
 	}
 
 	/**
-	 * Remove stock from user's list
-	 * 
-	 * @param stockId
-	 * @param usStock
-	 * @return
+	 * Remove stock from user's list.
+	 *
+	 * @param stockId the stock id
+	 * @param usStock the us stock
+	 * @return the mono
 	 */
 	private Mono<UserStockList> removeStock(String stockId, UserStockList usStock) {
 		List<UserStock> stockList = usStock.getUserStocks().stream()
@@ -183,28 +191,29 @@ public class UserService {
 	}
 
 	/**
-	 * Find user
-	 * 
-	 * @param userId
-	 * @return
+	 * Find user.
+	 *
+	 * @param userId the user id
+	 * @return the user
 	 */
 	public Mono<User> getUser(String userId) {
 		return userRepo.findById(userId);
 	}
 
 	/**
-	 * Disable user
-	 * @param userId
-	 * @return
+	 * Disable user.
+	 *
+	 * @param userId the user id
+	 * @return the mono
 	 */
 	public Mono<Boolean> disableUser(String userId) {
 		return userRepo.findById(userId).flatMap(updateUserActiveStatus()).switchIfEmpty(Mono.just(Boolean.FALSE));
 	}
 
 	/**
-	 * Update user active status to false
-	 * 
-	 * @return
+	 * Update user active status to false.
+	 *
+	 * @return the function<? super user,? extends mono<? extends boolean>>
 	 */
 	private Function<? super User, ? extends Mono<? extends Boolean>> updateUserActiveStatus() {
 		return user -> {

@@ -15,12 +15,22 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import ca.gl.fileUploader.model.Stock;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class KafkaProducerConfig.
+ */
 @Configuration
 public class KafkaProducerConfig {
 
+	/** The bootstrap address. */
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
 
+	/**
+	 * Stock producer factory.
+	 *
+	 * @return the producer factory
+	 */
 	@Bean
 	public ProducerFactory<String, Stock> stockProducerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
@@ -30,6 +40,11 @@ public class KafkaProducerConfig {
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 
+	/**
+	 * Stock kafka template.
+	 *
+	 * @return the kafka template
+	 */
 	@Bean
 	public KafkaTemplate<String, Stock> stockKafkaTemplate() {
 		return new KafkaTemplate<>(stockProducerFactory());

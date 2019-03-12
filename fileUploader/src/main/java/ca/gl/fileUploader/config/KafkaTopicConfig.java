@@ -10,18 +10,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class KafkaTopicConfig.
+ */
 @Configuration
 public class KafkaTopicConfig {
 
+	/** The bootstrap address. */
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
 
+	/** The topic name. */
 	@Value("${message.topic.name}")
 	private String topicName;
 
+	/** The replication factor. */
 	@Value("${message.topic.replicationFator}")
 	private short replicationFactor;
 
+	/**
+	 * Kafka admin.
+	 *
+	 * @return the kafka admin
+	 */
 	@Bean
 	public KafkaAdmin kafkaAdmin() {
 		Map<String, Object> configs = new HashMap<>();
@@ -29,6 +41,11 @@ public class KafkaTopicConfig {
 		return new KafkaAdmin(configs);
 	}
 
+	/**
+	 * Topic 1.
+	 *
+	 * @return the new topic
+	 */
 	@Bean
 	public NewTopic topic1() {
 		return new NewTopic(topicName, 1, replicationFactor);

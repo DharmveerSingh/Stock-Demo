@@ -17,17 +17,25 @@ import com.gl.model.User;
 import com.gl.model.User2;
 import com.gl.service.UserService;
 
+// TODO: Auto-generated Javadoc
 /**
- * The login controller
- * @author dharamveer.singh
+ * The login controller.
  *
+ * @author dharamveer.singh
  */
 @Controller
 public class LoginController {
 
+	/** The user service. */
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Login.
+	 *
+	 * @param principal the principal
+	 * @return the model and view
+	 */
 	@RequestMapping(value = { "/", "/login" ,"user/login" }, method = RequestMethod.GET)
 	public ModelAndView login(Principal principal) {
 		
@@ -39,6 +47,12 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	/**
+	 * Registration.
+	 *
+	 * @param principal the principal
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
 	public ModelAndView registration(Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -50,6 +64,13 @@ public class LoginController {
 		return modelAndView;
 	}
 
+	/**
+	 * Creates the new user.
+	 *
+	 * @param user the user
+	 * @param bindingResult the binding result
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
@@ -70,6 +91,12 @@ public class LoginController {
 		return modelAndView;
 	}
 	
+	/**
+	 * Edits the user.
+	 *
+	 * @param principal the principal
+	 * @return the model and view
+	 */
 	@GetMapping("/edit")
 	public ModelAndView editUser(Principal principal) {
 		ModelAndView mv= new ModelAndView();
@@ -79,6 +106,14 @@ public class LoginController {
 		 return mv;
 	}
 	
+	/**
+	 * Edits the user.
+	 *
+	 * @param user the user
+	 * @param bindingResult the binding result
+	 * @param principal the principal
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public ModelAndView editUser(@Valid User2 user, BindingResult bindingResult, Principal principal) {
 		System.out.println("Principal USer: "+ principal.getName()+", user's user: "+ user.getEmail());
@@ -108,6 +143,12 @@ public class LoginController {
 		return modelAndView;
 	}
 	
+	/**
+	 * Delete account.
+	 *
+	 * @param principal the principal
+	 * @return the model and view
+	 */
 	@GetMapping("/delete")
 	public ModelAndView deleteAccount(Principal principal) {
 		ModelAndView mv= new ModelAndView();

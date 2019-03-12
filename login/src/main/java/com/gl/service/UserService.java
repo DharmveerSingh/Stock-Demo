@@ -33,57 +33,74 @@ import com.gl.repository.UserRepository;
 
 import ca.gl.fileUploader.model.Stock;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author dharamveer.singh
+ * The Class UserService.
  *
+ * @author dharamveer.singh
  */
 @Service("userService")
 public class UserService {
 
+	/** The log. */
 	private Logger log = LoggerFactory.getLogger(UserService.class);
 
+	/** The rest template. */
 	@Autowired
 	private RestTemplate restTemplate;
 
+	/** The se base url. */
 	@Value("${stock.exchange.baseURL}")
 	private String seBaseUrl;
 
+	/** The se get user. */
 	@Value("${stock.exchange.user.getUser}")
 	private String seGetUser;
 
+	/** The se disable user. */
 	@Value("${stock.exchange.user.disable}")
 	private String seDisableUser;
+	
+	/** The se user purchase. */
 	@Value("${stock.exchange.userStocks.purchase}")
 	private String seUserPurchase;
 
+	/** The se latest stocks. */
 	@Value("${stock.exchange.latestStocks}")
 	private String seLatestStocks;
 
+	/** The b crypt password encoder. */
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	/** The repo. */
 	@Autowired
 	private UserRepository repo;
 
+	/**
+	 * Instantiates a new user service.
+	 *
+	 * @param bCryptPasswordEncoder the b crypt password encoder
+	 */
 	@Autowired
 	public UserService(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	/**
-	 * get user by email
-	 * 
-	 * @param email
-	 * @return
+	 * get user by email.
+	 *
+	 * @param email the email
+	 * @return the optional
 	 */
 	public Optional<User> findUserByEmail(String email) {
 		return repo.findById(email);
 	}
 
 	/**
-	 * Save user
-	 * 
-	 * @param user
-	 * @return
+	 * Save user.
+	 *
+	 * @param user the user
+	 * @return the user
 	 */
 	public User saveUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -93,12 +110,12 @@ public class UserService {
 	}
 
 	/**
-	 * get data by pagination
-	 * 
-	 * @param request
-	 * @param principal
-	 * @param session
-	 * @return
+	 * get data by pagination.
+	 *
+	 * @param request the request
+	 * @param principal the principal
+	 * @param session the session
+	 * @return the model and view
 	 */
 	public ModelAndView getModelAndView(HttpServletRequest request, Principal principal, HttpSession session) {
 		String offsetString = request.getParameter(AppConstants.PARAM_OFFSET);
@@ -118,12 +135,12 @@ public class UserService {
 	}
 
 	/**
-	 * get home page for user by email
-	 * 
-	 * @param latestStocks
-	 * @param userStockList
-	 * @param session
-	 * @return
+	 * get home page for user by email.
+	 *
+	 * @param latestStocks the latest stocks
+	 * @param userStockList the user stock list
+	 * @param session the session
+	 * @return the model and view
 	 */
 	private ModelAndView getModelAndView(List<Stock> latestStocks, List<UserStockResponse> userStockList,
 			HttpSession session) {
@@ -151,10 +168,10 @@ public class UserService {
 	}
 
 	/**
-	 * get all stocks purchased by user
-	 * 
-	 * @param principal
-	 * @return
+	 * get all stocks purchased by user.
+	 *
+	 * @param principal the principal
+	 * @return the user stocks
 	 */
 	private List<UserStockResponse> getUserStocks(Principal principal) {
 		String url = seBaseUrl + seUserPurchase + "?user=" + principal.getName();
@@ -176,11 +193,11 @@ public class UserService {
 	}
 
 	/**
-	 * Get latest stocks from cache in paginated way
-	 * 
-	 * @param offset
-	 * @param pagesize
-	 * @return
+	 * Get latest stocks from cache in paginated way.
+	 *
+	 * @param offset the offset
+	 * @param pagesize the pagesize
+	 * @return the latest stocks from chache
 	 */
 	private List<Stock> getLatestStocksFromChache(int offset, int pagesize) {
 
@@ -200,7 +217,7 @@ public class UserService {
 	}
 
 	/**
-	 * update cache from database
+	 * update cache from database.
 	 */
 	public void updateChache() {
 		String url = seBaseUrl + seLatestStocks;
@@ -214,7 +231,7 @@ public class UserService {
 	}
 
 	/**
-	 * Add records to cache after microservices starts
+	 * Add records to cache after microservices starts.
 	 */
 	@PostConstruct
 	public void addRecordsToCache() {
@@ -224,10 +241,10 @@ public class UserService {
 	}
 
 	/**
-	 * get user
-	 * 
-	 * @param userId
-	 * @return
+	 * get user.
+	 *
+	 * @param userId the user id
+	 * @return the user
 	 */
 	public User getUser(String userId) {
 		String url = seBaseUrl + seGetUser + userId;
@@ -238,10 +255,10 @@ public class UserService {
 	}
 
 	/**
-	 * disable user
-	 * 
-	 * @param userId
-	 * @return
+	 * disable user.
+	 *
+	 * @param userId the user id
+	 * @return the boolean
 	 */
 	public Boolean disable(String userId) {
 		String url = seBaseUrl + seDisableUser + userId;

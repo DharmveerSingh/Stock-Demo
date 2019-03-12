@@ -12,25 +12,34 @@ import ca.gl.fileUploader.model.StockHistory;
 import ca.gl.fileUploader.model.StockHistoryList;
 import constant.AppConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StockService.
+ */
 @Service
 public class StockService {
 
+	/** The se base url. */
 	@Value("${stock.exchange.baseURL}")
 	private String seBaseUrl;
 
+	/** The se today history. */
 	@Value("${stock.exchange.stock.today.history}")
 	private String seTodayHistory;
 
+	/** The se weeks history. */
 	@Value("${stock.exchange.stock.week.history}")
 	private String seWeeksHistory;
+	
+	/** The rest template. */
 	@Autowired
 	private RestTemplate restTemplate;
 
 	/**
-	 * Get todays history by stock symbol
-	 * 
-	 * @param stockSymbol
-	 * @return
+	 * Get todays history by stock symbol.
+	 *
+	 * @param stockSymbol the stock symbol
+	 * @return the todays history
 	 */
 	public StockHistoryList getTodaysHistory(String stockSymbol) {
 		String url = seBaseUrl + seTodayHistory + AppConstants.REGULAR_HISTORY + stockSymbol;
@@ -50,10 +59,10 @@ public class StockService {
 	}
 
 	/**
-	 * Get weeks history for stockSymbol
-	 * 
-	 * @param stockSymbol
-	 * @return
+	 * Get weeks history for stockSymbol.
+	 *
+	 * @param stockSymbol the stock symbol
+	 * @return the weeks history
 	 */
 	public StockHistoryList getWeeksHistory(String stockSymbol) {
 		String url = seBaseUrl + seWeeksHistory + AppConstants.REGULAR_HISTORY + stockSymbol;

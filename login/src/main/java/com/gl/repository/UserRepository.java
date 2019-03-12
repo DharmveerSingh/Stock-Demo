@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.gl.model.User;
 
 /**
- * @author dharamveer.singh
+ * The Interface UserRepository.
  *
+ * @author dharamveer.singh
  */
 @Repository
 public interface UserRepository 

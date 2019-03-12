@@ -11,18 +11,24 @@ import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.service.AsyncService;
 import ca.gl.fileUploader.service.FileCheckerService;
 
+// TODO: Auto-generated Javadoc
 /**
- * Starting point of the application
- * 
- * @author dharamveer.singh
+ * Starting point of the application.
  *
+ * @author dharamveer.singh
  */
 @SpringBootApplication
 @EnableScheduling
 public class FileUploaderApplication {
 
+	/** The context. */
 	public static ConfigurableApplicationContext context;
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		context = SpringApplication.run(FileUploaderApplication.class, args);
 		FileCheckerService fileChecker = context.getBean(FileCheckerService.class);
@@ -35,8 +41,9 @@ public class FileUploaderApplication {
 	}
 
 	/**
-	 * Message producer bean
-	 * @return
+	 * Message producer bean.
+	 *
+	 * @return the message producer
 	 */
 	@Bean
 	public MessageProducer messageProducer() {

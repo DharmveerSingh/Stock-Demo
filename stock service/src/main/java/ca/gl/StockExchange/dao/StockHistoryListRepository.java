@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import ca.gl.fileUploader.model.StockHistoryList;
 
 
+/**
+ * The Interface StockHistoryListRepository.
+ */
 @Repository
 public interface StockHistoryListRepository 
   extends ReactiveCrudRepository<StockHistoryList, String> {

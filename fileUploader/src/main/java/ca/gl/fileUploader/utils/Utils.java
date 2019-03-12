@@ -11,20 +11,22 @@ import org.slf4j.LoggerFactory;
 
 import constant.AppConstants;
 
+// TODO: Auto-generated Javadoc
 /**
- * Utility class
- * 
- * @author dharamveer.singh
+ * Utility class.
  *
+ * @author dharamveer.singh
  */
 public class Utils {
+	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(Utils.class);
 
 	/**
-	 * Move given file to archive directory
-	 * 
-	 * @param fileName
-	 * @return
+	 * Move given file to archive directory.
+	 *
+	 * @param fileName the file name
+	 * @return the path
 	 */
 	public static Path moveFileToArch(String fileName) {
 		Path temp = null;
@@ -44,6 +46,12 @@ public class Utils {
 	}
 
 
+	/**
+	 * Move file to un processed.
+	 *
+	 * @param fileName the file name
+	 * @return the path
+	 */
 	public static Path moveFileToUnProcessed(String fileName) {
 		Path temp = null;
 		try {

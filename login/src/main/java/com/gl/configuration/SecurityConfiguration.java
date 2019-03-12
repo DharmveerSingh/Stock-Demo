@@ -14,17 +14,25 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.gl.service.CustomerUserDetailService;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author dharamveer.singh
+ * The Class SecurityConfiguration.
  *
+ * @author dharamveer.singh
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	/** The b crypt password encoder. */
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	/**
+	 * Mongo user details.
+	 *
+	 * @return the user details service
+	 */
 	@Bean
 	public UserDetailsService mongoUserDetails() {
 		return new CustomerUserDetailService();
