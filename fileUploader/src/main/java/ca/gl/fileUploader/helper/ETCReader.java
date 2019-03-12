@@ -14,13 +14,22 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
 import constant.AppConstants;
 
-/**unknown file reader
- * @author dharamveer.singh
+// TODO: Auto-generated Javadoc
+/**
+ * unknown file reader.
  *
+ * @author dharamveer.singh
  */
 public class ETCReader implements FileReader {
+	
+	/** The file. */
 	private File file;
 
+	/**
+	 * Instantiates a new ETC reader.
+	 *
+	 * @param file the file
+	 */
 	public ETCReader(File file) {
 		this.file = file;
 	}

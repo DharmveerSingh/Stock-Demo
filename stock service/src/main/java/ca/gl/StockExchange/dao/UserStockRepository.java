@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import ca.gl.StockExchange.model.UserStock;
 
+/**
+ * The Interface UserStockRepository.
+ */
 @Repository
 public interface UserStockRepository 
   extends ReactiveCrudRepository<UserStock, String> {

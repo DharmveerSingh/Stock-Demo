@@ -17,21 +17,37 @@ import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.service.AsyncService;
 
+// TODO: Auto-generated Javadoc
 //@Component
 /**
- * class to upload files
- * @author dharamveer.singh
+ * class to upload files.
  *
+ * @author dharamveer.singh
  */
 public class FileUploader implements Runnable {
+	
+	/** The file. */
 	private File file;
+	
+	/** The log. */
 	private Logger log = LoggerFactory.getLogger(FileUploader.class);
 	
+	/** The async service. */
 	@Autowired
 	private AsyncService asyncService;
 	
+	/** The kafka producer. */
 	private MessageProducer kafkaProducer;
 
+	/**
+	 * Instantiates a new file uploader.
+	 *
+	 * @param file the file
+	 * @param repo the repo
+	 * @param kafkaProducer the kafka producer
+	 * @param asyncService the async service
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public FileUploader(File file, StockRepository repo, MessageProducer kafkaProducer, AsyncService asyncService) throws IOException {
 		this.file = file;
 		this.kafkaProducer = kafkaProducer;
@@ -39,9 +55,12 @@ public class FileUploader implements Runnable {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	public void run() {
 
-		System.out.println("Going to process: " + file);
+		System.out.println("Going to process: " + file +" with thread: "+ Thread.currentThread().getName());
 
 		String ext = file.getName().substring(file.getName().lastIndexOf('.') + 1);
 
@@ -66,6 +85,12 @@ public class FileUploader implements Runnable {
 
 	}
 
+	/**
+	 * Removes the file.
+	 *
+	 * @param file2 the file 2
+	 * @param ext the ext
+	 */
 	private void removeFile(File file2, String ext) {
 		FileReader reader = FileReaderFactory.getFileReader(file, ext);
 		try {
@@ -75,6 +100,12 @@ public class FileUploader implements Runnable {
 		}
 	}
 
+	/**
+	 * Save as stream.
+	 *
+	 * @param inputFile the input file
+	 * @param ext the ext
+	 */
 	private void saveAsStream(File inputFile, String ext) {
 		FileReader reader = FileReaderFactory.getFileReader(file, ext);
 		log.info("Started reading file: {} with extension {}", file.getAbsolutePath(), ext);
@@ -100,6 +131,11 @@ public class FileUploader implements Runnable {
 		}
 	}
 
+	/**
+	 * Save as list.
+	 *
+	 * @param ext the ext
+	 */
 	private void saveAsList(String ext) {
 
 		FileReader reader = FileReaderFactory.getFileReader(file, ext);

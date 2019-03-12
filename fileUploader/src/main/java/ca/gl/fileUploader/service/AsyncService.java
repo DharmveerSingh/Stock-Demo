@@ -20,24 +20,28 @@ import ca.gl.fileUploader.model.StockHistoryList;
 import constant.AppConstants;
 import reactor.core.publisher.Mono;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AsyncService.
+ */
 @Service
 public class AsyncService {
 
-	/**
-	 * This async method save latest stocks and will also update the same in their
-	 * history
-	 */
+	/** This async method save latest stocks and will also update the same in their history. */
 	private static final Logger log = LoggerFactory.getLogger(AsyncService.class);
+	
+	/** The stock repo. */
 	@Autowired
 	private StockRepository stockRepo;
 
+	/** The list repo. */
 	@Autowired
 	private StockHistoryListRepository listRepo;
 
 	/**
-	 * Save stock list
-	 * 
-	 * @param stockList
+	 * Save stock list.
+	 *
+	 * @param stockList the stock list
 	 */
 	@Async
 	public void saveStocksUpdateHis(List<Stock> stockList) {
@@ -49,10 +53,10 @@ public class AsyncService {
 	}
 
 	/**
-	 * Save or update regular history
-	 * 
-	 * @param stock
-	 * @param stockHisId
+	 * Save or update regular history.
+	 *
+	 * @param stock the stock
+	 * @param stockHisId the stock his id
 	 */
 	private void saveOrUpdateRegularHist(final Stock stock, final String stockHisId) {
 		Mono<StockHistoryList> stockHistory = listRepo.findById(stockHisId);
@@ -61,11 +65,11 @@ public class AsyncService {
 	}
 
 	/**
-	 * Update stock history list
-	 * 
-	 * @param stock
-	 * @param stockHisId
-	 * @return
+	 * Update stock history list.
+	 *
+	 * @param stock the stock
+	 * @param stockHisId the stock his id
+	 * @return the function<? super stock history list,? extends mono<? extends stock history list>>
 	 */
 	private Function<? super StockHistoryList, ? extends Mono<? extends StockHistoryList>> updateStockHisList(
 			final Stock stock, final String stockHisId) {
@@ -78,22 +82,22 @@ public class AsyncService {
 	}
 
 	/**
-	 * create stock history list
-	 * 
-	 * @param stock
-	 * @param stockHisId
-	 * @return
+	 * create stock history list.
+	 *
+	 * @param stock the stock
+	 * @param stockHisId the stock his id
+	 * @return the mono
 	 */
 	private Mono<StockHistoryList> createStockHisList(final Stock stock, final String stockHisId) {
 		return listRepo.save(stock.toRegularHistoryList()).doOnError(handleCreationErrors(stock, stockHisId));
 	}
 
 	/**
-	 * Handle creation errors
-	 * 
-	 * @param stock
-	 * @param stockHisId
-	 * @return
+	 * Handle creation errors.
+	 *
+	 * @param stock the stock
+	 * @param stockHisId the stock his id
+	 * @return the consumer<? super throwable>
 	 */
 	private Consumer<? super Throwable> handleCreationErrors(final Stock stock, final String stockHisId) {
 		return err -> {
@@ -106,11 +110,11 @@ public class AsyncService {
 	}
 
 	/**
-	 * Handle updation errors
-	 * 
-	 * @param stock
-	 * @param stockHisId
-	 * @return
+	 * Handle updation errors.
+	 *
+	 * @param stock the stock
+	 * @param stockHisId the stock his id
+	 * @return the consumer<? super throwable>
 	 */
 	private Consumer<? super Throwable> handleUpdationErrors(final Stock stock, final String stockHisId) {
 		return err -> {

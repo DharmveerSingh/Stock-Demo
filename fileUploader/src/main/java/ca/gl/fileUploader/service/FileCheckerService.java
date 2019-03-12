@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.stereotype.Service;
 
 import ca.gl.fileUploader.config.MessageProducer;
@@ -17,8 +17,11 @@ import constant.AppConstants;
 @Service
 public class FileCheckerService {
 	int processors = Runtime.getRuntime().availableProcessors();
-
-	ExecutorService executor = Executors.newFixedThreadPool(processors);
+	ExecutorService executor;
+	public FileCheckerService(){
+		executor= Executors.newFixedThreadPool(processors,  new CustomizableThreadFactory("uploader-"));
+	}
+	
 
 	/**
 	 * this method will be keep checking file and process them if found in input dir

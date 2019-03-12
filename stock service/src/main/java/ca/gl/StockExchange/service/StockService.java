@@ -18,30 +18,44 @@ import ca.gl.fileUploader.model.StockHistoryList;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StockService.
+ */
 @Service
 public class StockService {
+	
+	/** The stock repo. */
 	@Autowired
 	private StockRepository stockRepo;
 	
+	/** The stock his list repo. */
 	@Autowired
 	private StockHistoryListRepository stockHisListRepo;
 	
+	/**
+	 * Gets the latest stocks.
+	 *
+	 * @return the latest stocks
+	 */
 	public Flux<Stock> getLatestStocks() {
 		return stockRepo.findAllLatest();
 	}
 
 	/**
-	 * Get today's history
-	 * @param stockHistoryId
-	 * @return
+	 * Get today's history.
+	 *
+	 * @param stockHistoryId the stock history id
+	 * @return the todays history
 	 */
 	public Mono<StockHistoryList> getTodaysHistory(String stockHistoryId) {
 		return stockHisListRepo.findById(stockHistoryId).flatMap(todaysHistory()).switchIfEmpty(Mono.empty());
 	}
 
 	/**
-	 * Filter todays history from week history
-	 * @return
+	 * Filter todays history from week history.
+	 *
+	 * @return the function<? super stock history list,? extends mono<? extends stock history list>>
 	 */
 	private Function<? super StockHistoryList, ? extends Mono<? extends StockHistoryList>> todaysHistory() {
 		return stockHisList ->  {
@@ -53,9 +67,11 @@ public class StockService {
 		};
 	}
 
-	/**Get week history
-	 * @param stockHistoryId
-	 * @return
+	/**
+	 * Get week history.
+	 *
+	 * @param stockHistoryId the stock history id
+	 * @return the weeks history
 	 */
 	public Mono<StockHistoryList> getWeeksHistory(String stockHistoryId) {
 		return stockHisListRepo.findById(stockHistoryId).switchIfEmpty(Mono.empty());

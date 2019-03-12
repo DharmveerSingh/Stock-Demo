@@ -16,26 +16,29 @@ import constant.AppConstants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+// TODO: Auto-generated Javadoc
 /**
- * Scheduled task class
- * 
- * @author dharamveer.singh
+ * Scheduled task class.
  *
+ * @author dharamveer.singh
  */
 @Component
 public class ScheduledTasks {
 
+	/** The history list repo. */
 	@Autowired
 	private StockHistoryListRepository historyListRepo;
 
+	/** The stock repo. */
 	@Autowired
 	private StockRepository stockRepo;
 
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
 	/**
 	 * this method will run at 10 PM of every weekday to store historycal data about
-	 * stocks
+	 * stocks.
 	 */
 	@Scheduled(cron = "0 0 22 * * MON-FRI")
 	public void reportCurrentTime() {
@@ -45,9 +48,9 @@ public class ScheduledTasks {
 	}
 
 	/**
-	 * Insert stock data to db
-	 * 
-	 * @param stock
+	 * Insert stock data to db.
+	 *
+	 * @param stock the stock
 	 */
 	private void insertIntoDB(Stock stock) {
 		Mono<StockHistoryList> stockHistory = historyListRepo
@@ -57,6 +60,12 @@ public class ScheduledTasks {
 
 	}
 
+	/**
+	 * Apped history.
+	 *
+	 * @param stock the stock
+	 * @return the consumer<? super stock history list>
+	 */
 	private Consumer<? super StockHistoryList> appedHistory(Stock stock) {
 		return data -> {
 			data.getStockList().add(stock.toHistory());

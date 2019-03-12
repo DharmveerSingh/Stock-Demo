@@ -9,40 +9,97 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+// TODO: Auto-generated Javadoc
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 @Data
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 @ToString
 @JsonDeserialize
+
+/**
+ * Instantiates a new user stock response.
+ */
 @NoArgsConstructor
 public class UserStockResponse {
 
+	/** The Stock ID. */
 	// Stock
 	private String StockID;
+	
+	/** The stock symbol. */
 	private String stockSymbol;
+	
+	/** The prev close. */
 	private Double prevClose;
+	
+	/** The price. */
 	private Double price;
+	
+	/** The pe. */
 	private Double PE;
+	
+	/** The eps. */
 	private Double EPS;
+	
+	/** The low. */
 	private Double low;
+	
+	/** The high. */
 	private Double high;
+	
+	/** The volume. */
 	private Long volume;
+	
+	/** The wk low. */
 	private Double wkLow;
+	
+	/** The wk high. */
 	private Double wkHigh;
+	
+	/** The open price. */
 	private Double openPrice;
 
+	/** The user id. */
 	// user stock
 	private String userId;
+	
+	/** The locked price. */
 	private Double lockedPrice;
+	
+	/** The current price. */
 	private Double currentPrice;
+	
+	/** The investment. */
 	private Double investment;
+	
+	/** The user stock id. */
 	private String userStockId;
 
+	/** The change. */
 	// calculation
 	private String change;
+	
+	/** The earning. */
 	private String earning;
+	
+	/** The income. */
 	private String income;
+	
+	/** The number format. */
 	// formater
 	private DecimalFormat numberFormat = new DecimalFormat("#.00");
 
+	/**
+	 * Sets the stock.
+	 *
+	 * @param stock the stock
+	 * @param userStock the user stock
+	 */
 	public void setStock(Stock stock, UserStock userStock) {
 		StockID = stock.getStockID();
 		stockSymbol = stock.getStockSymbol();

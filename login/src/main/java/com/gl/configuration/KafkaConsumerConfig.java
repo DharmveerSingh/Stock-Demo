@@ -16,19 +16,26 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import ca.gl.fileUploader.model.Stock;
 
+// TODO: Auto-generated Javadoc
 /**
- * the kafka consumer config
- * 
- * @author dharamveer.singh
+ * the kafka consumer config.
  *
+ * @author dharamveer.singh
  */
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
 
+	/** The bootstrap address. */
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
 
+	/**
+	 * Consumer factory.
+	 *
+	 * @param groupId the group id
+	 * @return the consumer factory
+	 */
 	public ConsumerFactory<String, String> consumerFactory(String groupId) {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
@@ -38,23 +45,38 @@ public class KafkaConsumerConfig {
 		return new DefaultKafkaConsumerFactory<>(props);
 	}
 
+	/**
+	 * Foo kafka listener container factory.
+	 *
+	 * @return the concurrent kafka listener container factory
+	 */
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, String> fooKafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-		factory.setConsumerFactory(consumerFactory("foo"));
+		factory.setConsumerFactory(consumerFactory("stockGroup"));
 		return factory;
 	}
 
+	/**
+	 * Stock consumer factory.
+	 *
+	 * @return the consumer factory
+	 */
 	public ConsumerFactory<String, Stock> stockConsumerFactory() {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, "greeting");
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, "stockGroup");
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "kafka.producer");
 
 		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
 				new JsonDeserializer<Stock>(Stock.class));
 	}
 
+	/**
+	 * Greeting kafka listener container factory.
+	 *
+	 * @return the concurrent kafka listener container factory
+	 */
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, Stock> greetingKafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, Stock> factory = new ConcurrentKafkaListenerContainerFactory<>();

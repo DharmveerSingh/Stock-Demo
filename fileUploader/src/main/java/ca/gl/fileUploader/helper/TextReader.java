@@ -16,23 +16,40 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
 import constant.AppConstants;
 
-/**Class for reading text files
- * @author dharamveer.singh
+// TODO: Auto-generated Javadoc
+/**
+ * Class for reading text files.
  *
+ * @author dharamveer.singh
  */
 public class TextReader implements FileReader {
+	
+	/** The log. */
 	private Logger log = LoggerFactory.getLogger(TextReader.class);
+	
+	/** The file. */
 	private File file;
 
+	/**
+	 * Instantiates a new text reader.
+	 *
+	 * @param file the file
+	 */
 	public TextReader(File file) {
 		this.file = file;
 	}
 
+	/* (non-Javadoc)
+	 * @see ca.gl.fileUploader.helper.FileReader#readFileAsList()
+	 */
 	@Override
 	public List<Stock> readFileAsList() throws OperationNotSupportedException {
 		throw new OperationNotSupportedException("Text files will be read as stream only");
 	}
 
+	/* (non-Javadoc)
+	 * @see ca.gl.fileUploader.helper.FileReader#readFileAsStream()
+	 */
 	@Override
 	public Stream<Stock> readFileAsStream() throws OperationNotSupportedException {
 		Path path = Utils.moveFileToArch(file.getName());
@@ -48,6 +65,12 @@ public class TextReader implements FileReader {
 		return stream;
 	}
 
+	/**
+	 * Line to stock.
+	 *
+	 * @param line the line
+	 * @return the stock
+	 */
 	private Stock lineToStock(String line) {
 		Stock stock = new Stock();
 		String[] arr = line.split("\\t+");

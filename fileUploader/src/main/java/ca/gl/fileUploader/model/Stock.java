@@ -18,65 +18,115 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Stock.
+ */
 @Document
+
+/**
+ * Sets the open price.
+ *
+ * @param openPrice the new open price
+ */
 @Data
+
+/**
+ * Instantiates a new stock.
+ *
+ * @param StockID the stock ID
+ * @param stockSymbol the stock symbol
+ * @param prevClose the prev close
+ * @param price the price
+ * @param PE the pe
+ * @param EPS the eps
+ * @param low the low
+ * @param high the high
+ * @param volume the volume
+ * @param wkLow the wk low
+ * @param wkHigh the wk high
+ * @param openPrice the open price
+ */
 @AllArgsConstructor
+
+/**
+ * Instantiates a new stock.
+ */
 @NoArgsConstructor
+
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 @EqualsAndHashCode
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 @ToString
 public class Stock implements Serializable, Comparable<Stock> {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1456254210366306630L;
 
+	/** The Stock ID. */
 	@NonNull
 	@Field
 	@Id
 	private String StockID;
 
+	/** The stock symbol. */
 	@NonNull
 	@Field
 	private String stockSymbol;
 
+	/** The prev close. */
 	@Field
 	private Double prevClose;
 
+	/** The price. */
 	@Field
 	private Double price;
 
+	/** The pe. */
 	@Field
 	private Double PE;
 
+	/** The eps. */
 	@NonNull
 	@Field
 	private Double EPS;
 
+	/** The low. */
 	@NonNull
 	@Field
 	private Double low;
 
+	/** The high. */
 	@NonNull
 	@Field
 	private Double high;
 
+	/** The volume. */
 	@Field
 	private Long volume;
 
+	/** The wk low. */
 	@Field // 52-Wk Low
 	private Double wkLow;
 
+	/** The wk high. */
 	@Field // 52-Wk High
 	private Double wkHigh;
 
+	/** The open price. */
 	@Field
 	private Double openPrice;
 
-	@Version
-	@Field
-	private long version;
-	
+	/**
+	 * To history list.
+	 *
+	 * @return the stock history list
+	 */
 	public StockHistoryList toHistoryList() {
 		StockHistoryList list = new StockHistoryList();
 		StockHistory stockHistory = new StockHistory();
@@ -98,6 +148,11 @@ public class Stock implements Serializable, Comparable<Stock> {
 		return list;
 	}
 
+	/**
+	 * To regular history list.
+	 *
+	 * @return the stock history list
+	 */
 	public StockHistoryList toRegularHistoryList() {
 		StockHistoryList list = new StockHistoryList();
 		StockHistory stockHistory = new StockHistory();
@@ -119,6 +174,12 @@ public class Stock implements Serializable, Comparable<Stock> {
 		System.out.println("Called toRegularHostoryList for: "+ this.getStockSymbol());
 		return list;
 	}
+	
+	/**
+	 * To history.
+	 *
+	 * @return the stock history
+	 */
 	public StockHistory toHistory() {
 		StockHistory stockHistory = new StockHistory();
 		stockHistory.setClosePrice(this.price);
@@ -134,6 +195,9 @@ public class Stock implements Serializable, Comparable<Stock> {
 		return stockHistory;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public int compareTo(Stock o) {
 		return this.stockSymbol.compareTo(o.getStockSymbol());

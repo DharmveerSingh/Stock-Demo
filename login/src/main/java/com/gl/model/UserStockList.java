@@ -13,21 +13,44 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserStockList.
+ */
 @Document
+
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 @Data
+
+/**
+ * Instantiates a new user stock list.
+ *
+ * @param userStockId the user stock id
+ * @param userStocks the user stocks
+ * @param count the count
+ */
 @AllArgsConstructor
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 @ToString
 @JsonDeserialize 
 public class UserStockList {
 	
+	/** The user stock id. */
 	@Id
 	@Field
 	@JsonIgnore
 	private String userStockId;
 	
+	/** The user stocks. */
 	@Field
 	List<UserStock> userStocks;
 	
+	/** The count. */
 	@Field
 	private Integer count;
 	

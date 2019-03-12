@@ -13,20 +13,30 @@ import com.gl.service.StockService;
 
 import ca.gl.fileUploader.model.StockHistoryList;
 
-/**The stock controller
- * @author dharamveer.singh
+// TODO: Auto-generated Javadoc
+/**
+ * The stock controller.
  *
+ * @author dharamveer.singh
  */
 @Controller
 @RequestMapping("/stock")
 public class StockController {
 	
+	/** The log. */
 	private Logger log = LoggerFactory.getLogger(StockController.class);
 	
+	/** The stock service. */
 	@Autowired
 	private StockService stockService;
 	
 
+	/**
+	 * Gets the todays history.
+	 *
+	 * @param stockSymbol the stock symbol
+	 * @return the todays history
+	 */
 	@GetMapping("/todaysHistory")
 	public ModelAndView getTodaysHistory(@RequestParam("stockSymbol") String stockSymbol) {
 		log.info("Request recived to show stock todays history with symbol: {}", stockSymbol);
@@ -43,6 +53,12 @@ public class StockController {
 		return mv;
 	}
 	
+	/**
+	 * Gets the weeks history.
+	 *
+	 * @param stockSymbol the stock symbol
+	 * @return the weeks history
+	 */
 	@GetMapping("/weeksHistory")
 	public ModelAndView getWeeksHistory(@RequestParam("stockSymbol") String stockSymbol) {
 		log.info("Request recived to show stock weekly history with symbol: {}", stockSymbol);

@@ -18,11 +18,24 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ca.gl.fileUploader.model.Stock;
 import constant.AppConstants;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating FileReader objects.
+ */
 public class FileReaderFactory {
 
+	/**
+	 * Instantiates a new file reader factory.
+	 */
 	private FileReaderFactory() {
 	};
 
+	/**
+	 * Gets the file reader.
+	 *
+	 * @param fileName the file name
+	 * @return the file reader
+	 */
 	public static FileReader getFileReader(String fileName) {
 
 		String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
@@ -40,13 +53,26 @@ public class FileReaderFactory {
 		return reader;
 	}
 
+	/**
+	 * The Class ExcelReader.
+	 */
 	private static class ExcelReader implements FileReader {
+		
+		/** The file name. */
 		String fileName;
 
+		/**
+		 * Instantiates a new excel reader.
+		 *
+		 * @param fileName the file name
+		 */
 		public ExcelReader(String fileName) {
 			this.fileName = fileName;
 		}
 
+		/* (non-Javadoc)
+		 * @see ca.gl.fileUploader.reader.FileReader#readFile()
+		 */
 		@Override
 		public List<Stock> readFile() {
 
@@ -58,11 +84,23 @@ public class FileReaderFactory {
 
 		}
 
+		/**
+		 * Move file to arch.
+		 *
+		 * @param fileName the file name
+		 * @return the path
+		 */
 		private Path moveFileToArch(String fileName) {
 			return Paths.get(fileName);
 			
 		}
 
+		/**
+		 * Read books from excel file.
+		 *
+		 * @param path the path
+		 * @return the list
+		 */
 		private List<Stock> readBooksFromExcelFile(Path path) {
 			List<Stock> listStocks = new ArrayList<>();
 			FileInputStream inputStream;

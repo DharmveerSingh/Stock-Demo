@@ -14,30 +14,51 @@ import ca.gl.fileUploader.model.StockHistoryList;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+// TODO: Auto-generated Javadoc
 /**
- * Stock Controller
- * @author dharamveer.singh
+ * Stock Controller.
  *
+ * @author dharamveer.singh
  */
 @RestController
 @RequestMapping("/stock")
 public class StockController {
 
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(StockController.class);
+	
+	/** The stock service. */
 	@Autowired
 	private StockService stockService;
 
+	/**
+	 * Gets the stocks.
+	 *
+	 * @return the stocks
+	 */
 	@GetMapping("/latest")
 	public Flux<Stock> getStocks() {
 		log.info("Called getAllLateststocks");
 		return stockService.getLatestStocks();
 	}
 	
+	/**
+	 * Gets the todays history.
+	 *
+	 * @param stockHistoryId the stock history id
+	 * @return the todays history
+	 */
 	@GetMapping("/today")
 	public Mono<StockHistoryList> getTodaysHistory(@RequestParam("stockHistoryId")String stockHistoryId){
 		return stockService.getTodaysHistory(stockHistoryId);
 	}
 	
+	/**
+	 * Gets the weeks history.
+	 *
+	 * @param stockHistoryId the stock history id
+	 * @return the weeks history
+	 */
 	@GetMapping("/weekly")
 	public Mono<StockHistoryList> getWeeksHistory(@RequestParam("stockHistoryId")String stockHistoryId){
 		return stockService.getWeeksHistory(stockHistoryId);

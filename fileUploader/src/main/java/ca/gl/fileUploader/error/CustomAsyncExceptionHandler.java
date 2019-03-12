@@ -6,14 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 
-/**Async exception handler
- * @author dharamveer.singh
+// TODO: Auto-generated Javadoc
+/**
+ * Async exception handler.
  *
+ * @author dharamveer.singh
  */
 public class CustomAsyncExceptionHandler
 implements AsyncUncaughtExceptionHandler {
+	
+	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(CustomAsyncExceptionHandler.class);
  
+	/* (non-Javadoc)
+	 * @see org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler#handleUncaughtException(java.lang.Throwable, java.lang.reflect.Method, java.lang.Object[])
+	 */
 	@Override
   public void handleUncaughtException(
     Throwable throwable, Method method, Object... obj) {

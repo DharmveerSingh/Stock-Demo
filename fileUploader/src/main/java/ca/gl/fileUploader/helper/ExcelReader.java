@@ -21,19 +21,29 @@ import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
 import constant.AppConstants;
 
+// TODO: Auto-generated Javadoc
 /**
- * Excel fle reader
- * 
- * @author dharamveer.singh
+ * Excel fle reader.
  *
+ * @author dharamveer.singh
  */
 public class ExcelReader implements FileReader {
+	
+	/** The file. */
 	private File file;
 
+	/**
+	 * Instantiates a new excel reader.
+	 *
+	 * @param file the file
+	 */
 	public ExcelReader(File file) {
 		this.file = file;
 	}
 
+	/* (non-Javadoc)
+	 * @see ca.gl.fileUploader.helper.FileReader#readFileAsList()
+	 */
 	@Override
 	public List<Stock> readFileAsList() {
 
@@ -45,6 +55,12 @@ public class ExcelReader implements FileReader {
 
 	}
 
+	/**
+	 * Read books from excel file.
+	 *
+	 * @param path the path
+	 * @return the list
+	 */
 	private List<Stock> readBooksFromExcelFile(Path path) {
 		List<Stock> listStocks = new ArrayList<>();
 		FileInputStream inputStream;
@@ -109,6 +125,9 @@ public class ExcelReader implements FileReader {
 		return listStocks;
 	}
 
+	/* (non-Javadoc)
+	 * @see ca.gl.fileUploader.helper.FileReader#readFileAsStream()
+	 */
 	@Override
 	public Stream<Stock> readFileAsStream() throws OperationNotSupportedException {
 		throw new OperationNotSupportedException("don't have stream support yet");

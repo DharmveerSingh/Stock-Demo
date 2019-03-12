@@ -11,18 +11,25 @@ import org.springframework.stereotype.Service;
 import ca.gl.fileUploader.dao.StockRepository;
 import constant.AppConstants;
 
-/**Class file Checker
- * @author dharamveer.singh
+// TODO: Auto-generated Javadoc
+/**
+ * Class file Checker.
  *
+ * @author dharamveer.singh
  */
 @Service
 public class FileChecker {
+	
+	/** The processors. */
 	int processors = Runtime.getRuntime().availableProcessors();
     
+	/** The executor. */
 	ExecutorService executor= Executors.newFixedThreadPool(processors);
 
-	/**this method will keep looking for files in input directory
-	 * @param repo
+	/**
+	 * this method will keep looking for files in input directory.
+	 *
+	 * @param repo the repo
 	 */
 	public void keepProcessing(StockRepository repo) {
 		File base =new File(AppConstants.BASE_PATH);
