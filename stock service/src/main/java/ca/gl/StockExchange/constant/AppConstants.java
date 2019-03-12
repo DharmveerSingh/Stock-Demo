@@ -2,7 +2,6 @@ package ca.gl.StockExchange.constant;
 
 import java.text.SimpleDateFormat;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AppConstants.
  */

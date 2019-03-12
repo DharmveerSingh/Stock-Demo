@@ -17,7 +17,6 @@ import com.gl.model.User;
 import com.gl.model.User2;
 import com.gl.service.UserService;
 
-// TODO: Auto-generated Javadoc
 /**
  * The login controller.
  *

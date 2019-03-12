@@ -11,7 +11,6 @@ import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.service.AsyncService;
 import ca.gl.fileUploader.service.FileCheckerService;
 
-// TODO: Auto-generated Javadoc
 /**
  * Starting point of the application.
  *

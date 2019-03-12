@@ -2,7 +2,6 @@ package ca.gl.StockExchange.service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -18,7 +17,6 @@ import ca.gl.fileUploader.model.StockHistoryList;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class StockService.
  */

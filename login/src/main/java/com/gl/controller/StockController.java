@@ -13,7 +13,6 @@ import com.gl.service.StockService;
 
 import ca.gl.fileUploader.model.StockHistoryList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The stock controller.
  *

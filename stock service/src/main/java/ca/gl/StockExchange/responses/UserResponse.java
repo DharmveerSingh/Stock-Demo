@@ -3,7 +3,6 @@ package ca.gl.StockExchange.responses;
 import ca.gl.StockExchange.model.User;
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
 /**
  * Instantiates a new user response.
  */

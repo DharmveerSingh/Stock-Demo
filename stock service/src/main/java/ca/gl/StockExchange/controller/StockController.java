@@ -14,7 +14,6 @@ import ca.gl.fileUploader.model.StockHistoryList;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-// TODO: Auto-generated Javadoc
 /**
  * Stock Controller.
  *

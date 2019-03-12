@@ -3,9 +3,7 @@ package ca.gl.fileUploader.model;
 import java.time.LocalDateTime;
 
 import org.springframework.data.couchbase.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import com.couchbase.client.deps.com.fasterxml.jackson.annotation.JsonValue;
 import com.couchbase.client.java.repository.annotation.Field;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class StockHistory.
  */

@@ -2,9 +2,7 @@ package com.gl.model;
 
 import java.util.List;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.couchbase.core.mapping.Document;
@@ -19,7 +17,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class User2.
  */

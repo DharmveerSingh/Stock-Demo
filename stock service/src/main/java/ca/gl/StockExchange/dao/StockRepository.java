@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import ca.gl.fileUploader.model.Stock;
 import reactor.core.publisher.Flux;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface StockRepository.
  */

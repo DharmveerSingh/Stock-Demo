@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import ca.gl.StockExchange.constant.AppConstants;
 import ca.gl.StockExchange.dao.UserRepository;
 import ca.gl.StockExchange.dao.UserStockListRepository;
-import ca.gl.StockExchange.dao.UserStockRepository;
 import ca.gl.StockExchange.model.User;
 import ca.gl.StockExchange.model.UserStock;
 import ca.gl.StockExchange.model.UserStockList;
@@ -21,7 +20,6 @@ import ca.gl.StockExchange.responses.UserResponse;
 import ca.gl.StockExchange.utility.Utils;
 import reactor.core.publisher.Mono;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserService.
  */

@@ -16,7 +16,6 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * the kafka consumer config.
  *

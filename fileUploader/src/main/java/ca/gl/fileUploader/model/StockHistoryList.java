@@ -14,7 +14,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class StockHistoryList.
  */

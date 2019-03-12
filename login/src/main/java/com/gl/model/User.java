@@ -20,7 +20,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class User.
  */

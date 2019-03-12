@@ -14,7 +14,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.gl.service.CustomerUserDetailService;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SecurityConfiguration.
  *

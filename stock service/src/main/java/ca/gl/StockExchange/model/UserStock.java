@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserStock.
  */

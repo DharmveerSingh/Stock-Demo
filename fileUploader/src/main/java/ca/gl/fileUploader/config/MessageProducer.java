@@ -6,7 +6,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MessageProducer.
  */

@@ -10,7 +10,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import ca.gl.fileUploader.error.CustomAsyncExceptionHandler;
 
-// TODO: Auto-generated Javadoc
 /**
  * Async configuration class.
  *

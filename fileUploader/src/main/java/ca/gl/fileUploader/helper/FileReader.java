@@ -7,7 +7,6 @@ import javax.naming.OperationNotSupportedException;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * File reader interface.
  *

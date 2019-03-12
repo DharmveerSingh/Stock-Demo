@@ -2,7 +2,6 @@ package ca.gl.fileUploader.helper;
 
 import java.io.File;
 
-// TODO: Auto-generated Javadoc
 /**
  * Factory of File reader object base on file type.
  *

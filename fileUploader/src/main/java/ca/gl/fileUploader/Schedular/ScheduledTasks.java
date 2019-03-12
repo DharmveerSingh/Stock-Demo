@@ -16,7 +16,6 @@ import constant.AppConstants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-// TODO: Auto-generated Javadoc
 /**
  * Scheduled task class.
  *

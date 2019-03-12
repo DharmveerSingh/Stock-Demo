@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * Listen kafka message and add it to cache.
  *

@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 
-import lombok.val;
-
-// TODO: Auto-generated Javadoc
 /**
  * Couchbase configuration class.
  *

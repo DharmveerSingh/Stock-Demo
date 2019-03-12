@@ -2,7 +2,6 @@ package ca.gl.fileUploader.reader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ca.gl.fileUploader.model.Stock;
 import constant.AppConstants;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating FileReader objects.
  */

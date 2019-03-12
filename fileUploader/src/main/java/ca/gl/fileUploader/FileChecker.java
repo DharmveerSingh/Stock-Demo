@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import ca.gl.fileUploader.dao.StockRepository;
 import constant.AppConstants;
 
-// TODO: Auto-generated Javadoc
 /**
  * Class file Checker.
  *

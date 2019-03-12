@@ -15,7 +15,6 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class KafkaProducerConfig.
  */

@@ -17,8 +17,6 @@ import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.service.AsyncService;
 
-// TODO: Auto-generated Javadoc
-//@Component
 /**
  * class to upload files.
  *

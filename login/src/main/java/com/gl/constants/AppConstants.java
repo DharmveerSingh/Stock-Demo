@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.model.StockHistoryList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AppConstants.
  */

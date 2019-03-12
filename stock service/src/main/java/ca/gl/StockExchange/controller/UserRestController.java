@@ -19,7 +19,6 @@ import ca.gl.StockExchange.responses.UserResponse;
 import ca.gl.StockExchange.service.UserService;
 import reactor.core.publisher.Mono;
 
-// TODO: Auto-generated Javadoc
 /**
  * User controller.
  *

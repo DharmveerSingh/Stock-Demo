@@ -4,7 +4,6 @@ import java.util.List;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface FileReader.
  */
