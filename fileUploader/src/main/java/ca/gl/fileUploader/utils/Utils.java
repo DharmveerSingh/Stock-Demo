@@ -29,18 +29,23 @@ public class Utils {
 	 */
 	public static Path moveFileToArch(String fileName) {
 		Path temp = null;
-		try {
-			temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.ARCHIVE_PATH
-					+ Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
-
-			if (temp != null) {
-				log.debug("File renamed and moved successfully");
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		int attempt=0;
+		do {
+			try {
+				temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.ARCHIVE_PATH
+						+ Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				log.info("**********************retrying file renaming {}", attempt);
+				attempt++;
+			} 
+		} while (attempt<5);
 		return temp;
 	}
 

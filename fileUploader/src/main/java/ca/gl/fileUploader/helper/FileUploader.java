@@ -1,7 +1,6 @@
 package ca.gl.fileUploader.helper;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,18 +10,29 @@ import javax.naming.OperationNotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import ca.gl.fileUploader.config.MessageProducer;
-import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.service.AsyncService;
+import constant.AppConstants;
 
 /**
  * class to upload files.
  *
  * @author dharamveer.singh
  */
+@Component
+@Scope("prototype")
 public class FileUploader implements Runnable {
+	
+	/** The kafka producer. */
+	@Autowired
+	private MessageProducer kafkaProducer;
+	
+	@Autowired
+	private AsyncService asyncService;
 	
 	/** The file. */
 	private File file;
@@ -30,55 +40,28 @@ public class FileUploader implements Runnable {
 	/** The log. */
 	private Logger log = LoggerFactory.getLogger(FileUploader.class);
 	
-	/** The async service. */
-	@Autowired
-	private AsyncService asyncService;
-	
-	/** The kafka producer. */
-	private MessageProducer kafkaProducer;
-
-	/**
-	 * Instantiates a new file uploader.
-	 *
-	 * @param file the file
-	 * @param repo the repo
-	 * @param kafkaProducer the kafka producer
-	 * @param asyncService the async service
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
-	public FileUploader(File file, StockRepository repo, MessageProducer kafkaProducer, AsyncService asyncService) throws IOException {
-		this.file = file;
-		this.kafkaProducer = kafkaProducer;
-		this.asyncService= asyncService;
-
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
 
-		System.out.println("Going to process: " + file +" with thread: "+ Thread.currentThread().getName());
+		log.info("Going to process: {} with thread: {}", file , Thread.currentThread().getName());
 
-		String ext = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+		String extension = file.getName().substring(file.getName().lastIndexOf(AppConstants.DOT) + 1);
 
-		switch (ext) {
+		switch (extension) {
 		case "xlsx":
 		case "xls":
-			saveAsList(ext);
-			// saveAsStream(file, ext);
+			saveAsList(extension);
 			break;
 
 		case "txt":
-			saveAsStream(file, ext);
-			break;
 		case "csv":
-			saveAsStream(file, ext);
+			saveAsStream(file, extension);
 			break;
 			
 		default:
-			removeFile(file, ext);
-			;
+			removeFile(file, extension);
 		}
 
 	}
@@ -164,8 +147,13 @@ public class FileUploader implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println("Data saved");
+			log.info("Data saved");
 		}
 
 	}
+	
+	public void setFile(File file) {
+		this.file = file;
+	}
+
 }

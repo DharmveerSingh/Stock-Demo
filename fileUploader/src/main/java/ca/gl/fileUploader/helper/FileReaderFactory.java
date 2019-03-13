@@ -41,7 +41,6 @@ public class FileReaderFactory {
 			break;
 		default:
 			reader= new ETCReader(file);
-			;
 		}
 		return reader;
 	}

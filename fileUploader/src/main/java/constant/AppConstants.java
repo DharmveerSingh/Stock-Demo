@@ -30,4 +30,7 @@ public final class AppConstants {
 	
 	/** The Constant dateFormat. */
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+	/** The Constant DOT. */
+	public static final char DOT = '.';
 }

@@ -1,15 +1,13 @@
 package ca.gl.fileUploader;
 
+import java.io.IOException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import ca.gl.fileUploader.config.MessageProducer;
-import ca.gl.fileUploader.dao.StockRepository;
-import ca.gl.fileUploader.service.AsyncService;
-import ca.gl.fileUploader.service.FileCheckerService;
+import ca.gl.fileUploader.service.FileWatcherService;
 
 /**
  * Starting point of the application.
@@ -27,26 +25,14 @@ public class FileUploaderApplication {
 	 * The main method.
 	 *
 	 * @param args the arguments
+	 * @throws IOException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+
 		context = SpringApplication.run(FileUploaderApplication.class, args);
-		FileCheckerService fileChecker = context.getBean(FileCheckerService.class);
-		MessageProducer kafkaProducer = context.getBean(MessageProducer.class);
-		StockRepository repo = context.getBean(StockRepository.class);
-		AsyncService asyncService = context.getBean(AsyncService.class);
-		System.out.println(fileChecker);
+		FileWatcherService fileWatcher = context.getBean(FileWatcherService.class);
+		fileWatcher.processEvents();
 
-		fileChecker.keepProcessing(repo, kafkaProducer, asyncService);
-	}
-
-	/**
-	 * Message producer bean.
-	 *
-	 * @return the message producer
-	 */
-	@Bean
-	public MessageProducer messageProducer() {
-		return new MessageProducer();
 	}
 
 }
