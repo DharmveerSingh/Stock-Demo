@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 import com.couchbase.client.java.error.CASMismatchException;
 import com.couchbase.client.java.error.DocumentAlreadyExistsException;
 
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.dao.StockHistoryListRepository;
 import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.model.StockHistoryList;
-import constant.AppConstants;
 import reactor.core.publisher.Mono;
 
 /**
@@ -43,7 +43,7 @@ public class AsyncService {
 	 * @param stockList the stock list
 	 */
 	@Async
-	public void saveStocksUpdateHis(List<Stock> stockList) {
+	public void saveStocksUpdateHistory(List<Stock> stockList) {
 		stockRepo.saveAll(stockList).subscribe();
 		stockList.stream().parallel().forEach(stock -> {
 			final String stockHisId = AppConstants.REGULAR_HISTORY + stock.getStockSymbol();

@@ -15,11 +15,11 @@ import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import ca.gl.fileUploader.FileUploaderApplication;
 import ca.gl.fileUploader.helper.FileUploader;
-import constant.AppConstants;
 
 @Component
 public class FileWatcherService {
@@ -34,12 +34,12 @@ public class FileWatcherService {
     /**
      * Creates a WatchService and registers the given directory
      */
-    FileWatcherService() throws IOException {
+    FileWatcherService(@Value("${input.basePath}") String basePath) throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey, Path>();
         int processors = Runtime.getRuntime().availableProcessors();
         this.executor= Executors.newFixedThreadPool(processors);
-        walkAndRegisterDirectories(Paths.get(AppConstants.BASE_PATH));
+        walkAndRegisterDirectories(Paths.get(basePath));
     }
  
     /**
@@ -86,7 +86,7 @@ public class FileWatcherService {
  
             Path dir = keys.get(key);
             if (dir == null) {
-                System.err.println("WatchKey not recognized!!");
+                log.error("WatchKey not recognized!!");
                 continue;
             }
  
@@ -100,7 +100,7 @@ public class FileWatcherService {
                 Path child = dir.resolve(name);
  
                 // print out event
-                System.out.format("%s: %s\n", event.kind().name(), child);
+                log.info("{}: {}\n", event.kind().name(), child);
  
                 if (kind == ENTRY_CREATE) {
                 	FileUploader uploader=FileUploaderApplication.context.getBean(FileUploader.class);

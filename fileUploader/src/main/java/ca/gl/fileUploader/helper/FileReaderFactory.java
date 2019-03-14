@@ -2,11 +2,16 @@ package ca.gl.fileUploader.helper;
 
 import java.io.File;
 
+import org.springframework.stereotype.Component;
+
+import ca.gl.fileUploader.FileUploaderApplication;
+
 /**
  * Factory of File reader object base on file type.
  *
  * @author dharamveer.singh
  */
+@Component
 public class FileReaderFactory {
 
 	/**
@@ -18,7 +23,7 @@ public class FileReaderFactory {
 	/**
 	 * Gets the file reader.
 	 *
-	 * @param file the file
+	 * @param file      the file
 	 * @param extension the extension
 	 * @return the file reader
 	 */
@@ -29,21 +34,25 @@ public class FileReaderFactory {
 		switch (extension) {
 		case "xlsx":
 		case "xls":
-			reader = new ExcelReader(file);
+			reader = (FileReader) FileUploaderApplication.context.getBean(ExcelReader.class);
+			reader.setFile(file);
 			break;
-			
+
 		case "txt":
-			reader= new TextReader(file);
+			reader = (FileReader) FileUploaderApplication.context.getBean(TextReader.class);
+			reader.setFile(file);
 			break;
-			
+
 		case "csv":
-			reader= new CSVReader(file);
+			reader = (FileReader) FileUploaderApplication.context.getBean(CSVReader.class);
+			reader.setFile(file);
 			break;
 		default:
-			reader= new ETCReader(file);
+			reader = (FileReader) FileUploaderApplication.context.getBean(ETCReader.class);
+			reader.setFile(file);
 		}
+		
 		return reader;
 	}
 
-	
 }

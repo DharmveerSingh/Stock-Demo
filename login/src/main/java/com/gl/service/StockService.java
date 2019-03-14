@@ -8,11 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.model.StockHistory;
 import ca.gl.fileUploader.model.StockHistoryList;
-import constant.AppConstants;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class StockService.
  */

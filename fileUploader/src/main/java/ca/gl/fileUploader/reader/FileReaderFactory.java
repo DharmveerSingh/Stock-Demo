@@ -14,8 +14,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.model.Stock;
-import constant.AppConstants;
 
 /**
  * A factory for creating FileReader objects.

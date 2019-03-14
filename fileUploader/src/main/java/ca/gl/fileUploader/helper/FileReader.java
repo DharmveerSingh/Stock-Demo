@@ -1,5 +1,6 @@
 package ca.gl.fileUploader.helper;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,4 +30,7 @@ public interface FileReader {
 	 * @throws OperationNotSupportedException the operation not supported exception
 	 */
 	Stream<Stock> readFileAsStream() throws OperationNotSupportedException;
+	
+	
+	public void setFile(File file);
 }

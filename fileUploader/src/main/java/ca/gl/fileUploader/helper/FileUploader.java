@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import ca.gl.fileUploader.config.MessageProducer;
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.service.AsyncService;
-import constant.AppConstants;
 
 /**
  * class to upload files.
@@ -101,7 +101,7 @@ public class FileUploader implements Runnable {
 			
 			if(asyncService!=null) {
 				log.info("Calling saveStocksUpdateHis");
-				asyncService.saveStocksUpdateHis(stockList);
+				asyncService.saveStocksUpdateHistory(stockList);
 				}
 				else
 					log.error("Asynch service is null");
@@ -139,7 +139,7 @@ public class FileUploader implements Runnable {
 			try {
 				if(asyncService!=null) {
 				log.info("Calling saveStocksUpdateHis");
-				asyncService.saveStocksUpdateHis(list);
+				asyncService.saveStocksUpdateHistory(list);
 				}
 				else
 					log.error("Asynch service is null");

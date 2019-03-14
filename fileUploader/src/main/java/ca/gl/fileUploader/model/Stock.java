@@ -9,7 +9,7 @@ import org.springframework.data.couchbase.core.mapping.Document;
 
 import com.couchbase.client.java.repository.annotation.Field;
 
-import constant.AppConstants;
+import ca.gl.fileUploader.constant.AppConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

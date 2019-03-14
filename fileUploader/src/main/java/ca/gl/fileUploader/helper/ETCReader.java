@@ -7,19 +7,31 @@ import java.util.stream.Stream;
 
 import javax.naming.OperationNotSupportedException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
+import lombok.NoArgsConstructor;
 
 /**
  * unknown file reader.
  *
  * @author dharamveer.singh
  */
+@Component
+@Qualifier("etcReader")
+@Scope("prototype")
+@NoArgsConstructor
 public class ETCReader implements FileReader {
 	
 	/** The file. */
 	private File file;
-
+	
+	@Autowired
+	private Utils utils;
 	/**
 	 * Instantiates a new ETC reader.
 	 *
@@ -35,7 +47,7 @@ public class ETCReader implements FileReader {
 	 */
 	@Override
 	public List<Stock> readFileAsList() throws OperationNotSupportedException {
-		 Utils.moveFileToUnProcessed(file.getName());
+		utils.moveFileToUnProcessed(file.getName());
 		return new ArrayList<>();
 	}
 
@@ -46,6 +58,11 @@ public class ETCReader implements FileReader {
 	@Override
 	public Stream<Stock> readFileAsStream() throws OperationNotSupportedException {
 		throw new OperationNotSupportedException("Not supported for unknown file types");
+	}
+
+	@Override
+	public void setFile(File file) {
+		this.file=file;
 	}
 
 }

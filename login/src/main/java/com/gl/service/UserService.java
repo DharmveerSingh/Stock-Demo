@@ -33,7 +33,6 @@ import com.gl.repository.UserRepository;
 
 import ca.gl.fileUploader.model.Stock;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserService.
  *

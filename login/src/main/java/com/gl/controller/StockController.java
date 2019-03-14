@@ -47,7 +47,7 @@ public class StockController {
 		mv.addObject("title", "Stock's Todays Report");
 		mv.setViewName("stock/stockHistory");
 		
-		log.info("histor list: "+ model.getStockList());
+		log.info("history list: "+ model.getStockList().size());
 
 		return mv;
 	}
@@ -67,7 +67,7 @@ public class StockController {
 		mv.addObject("subtitle", stockSymbol+"'s over last week");
 		mv.setViewName("stock/stockHistory");
 		mv.addObject("title", "Stocks Weekly Report");
-		log.info("histor list: "+ model.getStockList());
+		log.info("history list: "+ model.getStockList().size());
 	    
 		return mv;
 	}

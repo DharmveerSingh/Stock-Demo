@@ -16,21 +16,32 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
-import constant.AppConstants;
+import lombok.NoArgsConstructor;
 
 /**
  * Excel fle reader.
  *
  * @author dharamveer.singh
  */
+@Component
+@Qualifier("excelReader")
+@Scope("prototype")
+@NoArgsConstructor
 public class ExcelReader implements FileReader {
 	
 	/** The file. */
 	private File file;
 
+	@Autowired
+	private Utils utils;
 	/**
 	 * Instantiates a new excel reader.
 	 *
@@ -46,7 +57,7 @@ public class ExcelReader implements FileReader {
 	@Override
 	public List<Stock> readFileAsList() {
 
-		Path path = Utils.moveFileToArch(file.getName());
+		Path path = utils.moveFileToArch(file.getName());
 		if (path != null)
 			return readBooksFromExcelFile(path);
 		else
@@ -130,6 +141,11 @@ public class ExcelReader implements FileReader {
 	@Override
 	public Stream<Stock> readFileAsStream() throws OperationNotSupportedException {
 		throw new OperationNotSupportedException("don't have stream support yet");
+	}
+
+	@Override
+	public void setFile(File file) {
+		this.file=file;
 	}
 
 }

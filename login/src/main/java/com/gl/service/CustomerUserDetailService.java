@@ -14,7 +14,6 @@ import com.gl.model.User;
 import com.gl.model.UserDetailsImpl;
 import com.gl.repository.UserRepository;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CustomerUserDetailService.
  *

@@ -8,31 +8,37 @@ import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import constant.AppConstants;
+import ca.gl.fileUploader.constant.AppConstants;
 
 /**
  * Utility class.
  *
  * @author dharamveer.singh
  */
+@Component
 public class Utils {
 	
 	/** The Constant log. */
 	private static final Logger log = LoggerFactory.getLogger(Utils.class);
-
+	
+	@Autowired
+	private AppConstants appConstants;
+	
 	/**
 	 * Move given file to archive directory.
 	 *
 	 * @param fileName the file name
 	 * @return the path
 	 */
-	public static Path moveFileToArch(String fileName) {
+	public Path moveFileToArch(String fileName) {
 		Path temp = null;
 		int attempt=0;
 		do {
 			try {
-				temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.ARCHIVE_PATH
+				temp = Files.move(Paths.get(appConstants.BASE_PATH + fileName), Paths.get(appConstants.ARCHIVE_PATH
 						+ Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
 				break;
 			} catch (IOException e) {
@@ -56,10 +62,10 @@ public class Utils {
 	 * @param fileName the file name
 	 * @return the path
 	 */
-	public static Path moveFileToUnProcessed(String fileName) {
+	public Path moveFileToUnProcessed(String fileName) {
 		Path temp = null;
 		try {
-			temp = Files.move(Paths.get(AppConstants.BASE_PATH + fileName), Paths.get(AppConstants.UNPROCESSED_PATH
+			temp = Files.move(Paths.get(appConstants.BASE_PATH + fileName), Paths.get(appConstants.UNPROCESSED_PATH
 					+ Calendar.getInstance().getTimeInMillis() + fileName.replaceAll(" ", "")));
 
 			if (temp != null) {

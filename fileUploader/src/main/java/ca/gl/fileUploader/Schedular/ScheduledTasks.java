@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.dao.StockHistoryListRepository;
 import ca.gl.fileUploader.dao.StockRepository;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.model.StockHistoryList;
-import constant.AppConstants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

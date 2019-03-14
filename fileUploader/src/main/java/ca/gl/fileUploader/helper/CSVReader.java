@@ -11,16 +11,23 @@ import javax.naming.OperationNotSupportedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import ca.gl.fileUploader.constant.AppConstants;
 import ca.gl.fileUploader.model.Stock;
 import ca.gl.fileUploader.utils.Utils;
-import constant.AppConstants;
 
 /**
  * CSV file reader.
  *
  * @author dharamveer.singh
  */
+@Component
+@Qualifier("csvReader")
+@Scope("prototype")
 public class CSVReader implements FileReader {
 	
 	/** The log. */
@@ -29,13 +36,14 @@ public class CSVReader implements FileReader {
 	/** The file. */
 	private File file;
 
+	@Autowired
+	private Utils utils;
 	/**
 	 * Instantiates a new CSV reader.
 	 *
 	 * @param file the file
 	 */
-	public CSVReader(File file) {
-		this.file = file;
+	public CSVReader() {
 	}
 
 	/* (non-Javadoc)
@@ -51,7 +59,7 @@ public class CSVReader implements FileReader {
 	 */
 	@Override
 	public Stream<Stock> readFileAsStream() throws OperationNotSupportedException {
-		Path path = Utils.moveFileToArch(file.getName());
+		Path path = utils.moveFileToArch(file.getName());
 		Stream<Stock> stream = null;
 		try {
 			long startTime = System.currentTimeMillis();
@@ -90,6 +98,11 @@ public class CSVReader implements FileReader {
 		stock.setOpenPrice(Double.valueOf(arr[10]));
 
 		return stock;
+	}
+
+	@Override
+	public void setFile(File file) {
+		this.file=file;
 	}
 
 }

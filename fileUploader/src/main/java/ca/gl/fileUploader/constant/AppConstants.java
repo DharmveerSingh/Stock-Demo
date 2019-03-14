@@ -1,22 +1,28 @@
-package constant;
+package ca.gl.fileUploader.constant;
 
 import java.text.SimpleDateFormat;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * The Class AppConstants.
  */
+@Component
 public final class AppConstants {
 
 	/** The base path. */
-	// @Value("input.basePath")
-	public static String BASE_PATH = "D:\\stockData\\live\\";
+	@Value(value = "${input.basePath}")
+	public String BASE_PATH;// = "D:\\stockData\\live\\";
 
 	/** The archive path. */
-	// @Value("input.archivePath")
-	public static String ARCHIVE_PATH = "D:\\stockData\\arch\\";
+	@Value(value = "${input.archivePath}")
+	public String ARCHIVE_PATH;// = "D:\\stockData\\arch\\";
 	
 	/** The unprocessed path. */
-	public static String UNPROCESSED_PATH = "D:\\stockData\\unprocessed\\";
+	@Value(value = "${input.unprocessedPath}")
+	public String UNPROCESSED_PATH;// = "D:\\stockData\\unprocessed\\";
 	
 	/** The latest. */
 	public static String LATEST = "LATEST::";
