@@ -8,7 +8,7 @@ Stocks Demo app
 5) Start zipkin(if want to trace request withing applications)
 6) import login-mvc, Stock-reactive-service, stock-uploader-service into eclipse as maven project
 7) run applications (start login-service at last as it is dependent on other services)
-8) open url http://localhost:8099/ and click on signup to create user
+8) open url http://localhost:8099/ and click on 'Go to registration page' to create user
 9) Place inputfile in dir D:/stockData/live/ 
 10) login with singed up user
 
