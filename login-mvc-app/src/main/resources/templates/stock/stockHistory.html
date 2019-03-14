@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="${title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript">
+ 
+    window.onload = function () {
+       	var obj=[[${response.stockList}]];
+    	var list=[];
+    	
+    	for (i = 0; i < obj.length; i++) {
+    		  console.log(obj[i].closePrice +" "+ new Date(obj[i].date)+", input date :"+obj[i].date);
+    		  list.push({x :new Date(obj[i].date), y:obj[i].closePrice});
+    		}
+    	console.log(list);
+ 
+		var chart = new CanvasJS.Chart("container",
+		{
+			title:{
+				text: [[${subtitle}]]
+			},     
+			axisY: {
+				title: "Stock Price",
+				suffix: " INR"
+			}, 
+			data: [
+			{        
+				type: "splineArea",
+				showInLegend: true,
+				legendText: [[${title}]],
+				markerSize: 10,
+				color: "rgba(54,158,173,.7)",
+				dataPoints: list
+			}             
+			]
+		});
+
+chart.render();
+}
+</script>
+		<div class="panel panel-primary">
+	
+			<div class="panel-heading" style="text-align: center;">
+				<span style="font-size: xx-large" th:utext="${title}"></span>
+			</div>
+			<div>
+			<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			</div>
+
+			<div class="panel-body">
+				<div class="table-responsive">
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Price</th>
+								<th>Date/Time</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${response.stockList.empty}">
+								<td colspan="2">No History Available</td>
+							</tr>
+							<tr th:each="stock, iStat: ${response.stockList}"
+								th:style="${iStat.odd}? 'font-weight: bold;'"
+								th:alt-title="${iStat.even}? 'odd' : 'even'">
+								<td th:text="${stock.closePrice}" />
+								<td th:text="${stock.date}" />
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+</body>
