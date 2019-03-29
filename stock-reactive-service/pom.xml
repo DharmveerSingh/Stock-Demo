@@ -22,13 +22,19 @@
 		<servlet.api.version>3.1.0</servlet.api.version>
 		<sleuth.version>2.1.0.RELEASE</sleuth.version>
 	</properties>
-
+	
 	<dependencies>
+	<dependency>
+	<groupId>ca.gl</groupId>
+	<artifactId>user-reactive-service</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	</dependency>
 		<dependency>
 			<groupId>ca.gl</groupId>
 			<artifactId>stock-uploader-service</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-couchbase-reactive</artifactId>
@@ -62,7 +68,10 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-zipkin</artifactId>

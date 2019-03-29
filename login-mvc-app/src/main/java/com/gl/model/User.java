@@ -30,6 +30,8 @@ import lombok.ToString;
  *
  * @param version the new version
  */
+
+
 @Data
 
 /**
@@ -44,7 +46,26 @@ import lombok.ToString;
  * @param roles the roles
  * @param version the version
  */
+
+/**
+ * Instantiates a new user.
+ *
+ * @param id the id
+ * @param email the email
+ * @param name the name
+ * @param lastName the last name
+ * @param active the active
+ * @param password the password
+ * @param roles the roles
+ * @param accountBalance the account balance
+ * @param version the version
+ * @param error the error
+ */
 @AllArgsConstructor
+
+/**
+ * Instantiates a new user.
+ */
 
 /**
  * Instantiates a new user.
@@ -54,7 +75,15 @@ import lombok.ToString;
 /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
  */
+
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 @EqualsAndHashCode
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#toString()
@@ -96,11 +125,17 @@ public class User {
 
 	/** The roles. */
 	@Field("roles")
-	List<String> roles;
+	private List<String> roles;
+	
+	/** The account balance. */
+	@Field
+	private Double accountBalance;
 	
 	/** The version. */
 	@Version
 	@Field
 	private long version;
-
+	
+	/** The error. */
+	private Throwable error;
 }

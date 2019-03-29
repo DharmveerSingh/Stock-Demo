@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 * @return the user details service
 	 */
 	@Bean
-	public UserDetailsService mongoUserDetails() {
+	public UserDetailsService couchUserDetails() {
 		return new CustomerUserDetailService();
 	}
 
@@ -46,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		UserDetailsService userDetailsService = mongoUserDetails();
+		UserDetailsService userDetailsService = couchUserDetails();
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 

@@ -16,22 +16,23 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gl.constants.AppConstants;
+import com.gl.feign.stock.StockServiceProxy;
+import com.gl.feign.user.UserServiceProxy;
 import com.gl.model.User;
+import com.gl.model.UserResponse;
 import com.gl.model.UserStockList;
 import com.gl.model.UserStockResponse;
-import com.gl.repository.UserRepository;
 
-import ca.gl.fileUploader.model.Stock;
+import ca.gl.fus.model.Stock;
+import ca.gl.user.model.transaction.Status;
+import ca.gl.user.model.transaction.Transaction;
 
 /**
  * The Class UserService.
@@ -44,36 +45,16 @@ public class UserService {
 	/** The log. */
 	private Logger log = LoggerFactory.getLogger(UserService.class);
 
-	/** The rest template. */
+	/** The stock service proxy. */
 	@Autowired
-	private RestTemplate restTemplate;
+	private StockServiceProxy stockServiceProxy;
 
-	/** The se base url. */
-	@Value("${stock.exchange.baseURL}")
-	private String seBaseUrl;
-
-	/** The se get user. */
-	@Value("${stock.exchange.user.getUser}")
-	private String seGetUser;
-
-	/** The se disable user. */
-	@Value("${stock.exchange.user.disable}")
-	private String seDisableUser;
+	/** The user service proxy. */
+	@Autowired
+	private UserServiceProxy userServiceProxy;
 	
-	/** The se user purchase. */
-	@Value("${stock.exchange.userStocks.purchase}")
-	private String seUserPurchase;
-
-	/** The se latest stocks. */
-	@Value("${stock.exchange.latestStocks}")
-	private String seLatestStocks;
-
 	/** The b crypt password encoder. */
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	/** The repo. */
-	@Autowired
-	private UserRepository repo;
 
 	/**
 	 * Instantiates a new user service.
@@ -92,7 +73,9 @@ public class UserService {
 	 * @return the optional
 	 */
 	public Optional<User> findUserByEmail(String email) {
-		return repo.findById(email);
+		log.info("Calling userServicePrxy.getUser() with {}", email);
+		User user=userServiceProxy.getUser("USER::"+email);
+		return Optional.ofNullable(user);
 	}
 
 	/**
@@ -105,15 +88,18 @@ public class UserService {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setActive(Boolean.TRUE);
 		user.setRoles(Arrays.asList("ADMIN"));
-		return repo.save(user);
+		UserResponse response = userServiceProxy.signup(user);
+		if (response.getError() != null)
+			log.error("Error while saving user: {}", response.getError());
+		return response.getUser();
 	}
 
 	/**
 	 * get data by pagination.
 	 *
-	 * @param request the request
+	 * @param request   the request
 	 * @param principal the principal
-	 * @param session the session
+	 * @param session   the session
 	 * @return the model and view
 	 */
 	public ModelAndView getModelAndView(HttpServletRequest request, Principal principal, HttpSession session) {
@@ -136,9 +122,9 @@ public class UserService {
 	/**
 	 * get home page for user by email.
 	 *
-	 * @param latestStocks the latest stocks
+	 * @param latestStocks  the latest stocks
 	 * @param userStockList the user stock list
-	 * @param session the session
+	 * @param session       the session
 	 * @return the model and view
 	 */
 	private ModelAndView getModelAndView(List<Stock> latestStocks, List<UserStockResponse> userStockList,
@@ -160,7 +146,7 @@ public class UserService {
 						.append(user.getLastName()).append(AppConstants.OPENING_BRACES).append(user.getEmail())
 						.append(AppConstants.CLOSING_BRACES).toString());
 		modelAndView.addObject(AppConstants.USERNAME, user.getEmail());
-
+		modelAndView.addObject("balance",user.getAccountBalance());
 		modelAndView.addObject(AppConstants.STOCK_LIST, latestStocks);
 		modelAndView.setViewName(AppConstants.USER_HOME_VIEW);
 		return modelAndView;
@@ -173,13 +159,11 @@ public class UserService {
 	 * @return the user stocks
 	 */
 	private List<UserStockResponse> getUserStocks(Principal principal) {
-		String url = seBaseUrl + seUserPurchase + "?user=" + principal.getName();
 
-		ResponseEntity<UserStockList> getUserStock = restTemplate.getForEntity(url, UserStockList.class);
 		List<UserStockResponse> response = new ArrayList<>();
-
-		if (getUserStock != null && getUserStock.getBody() != null) {
-			getUserStock.getBody().getUserStocks().forEach(userStk -> {
+		UserStockList userStock=userServiceProxy.getUserStock(principal.getName());
+		if (userStock != null && userStock.getError()==null) {
+			userStock.getUserStocks().forEach(userStk -> {
 				UserStockResponse usr = new UserStockResponse();
 				Stock ss = CACHE.get(userStk.getStockID());
 				userStk.setCurrentPrice(ss.getPrice());
@@ -194,14 +178,14 @@ public class UserService {
 	/**
 	 * Get latest stocks from cache in paginated way.
 	 *
-	 * @param offset the offset
+	 * @param offset   the offset
 	 * @param pagesize the pagesize
 	 * @return the latest stocks from chache
 	 */
 	private List<Stock> getLatestStocksFromChache(int offset, int pagesize) {
 
 		if (CACHE.size() == 0) {
-			updateChache();
+			updateCache();
 		}
 		final List<Stock> list = new ArrayList<>();
 		List<String> stockNameList = null;
@@ -218,11 +202,11 @@ public class UserService {
 	/**
 	 * update cache from database.
 	 */
-	public void updateChache() {
-		String url = seBaseUrl + seLatestStocks;
-		Stock[] stockList = restTemplate.getForObject(url, Stock[].class);
-		if (stockList.length > 0) {
-			Arrays.stream(stockList).forEach(st -> {
+	public void updateCache() {
+
+		List<Stock> stockList = stockServiceProxy.getLatestStocks();
+		if (!stockList.isEmpty()) {
+			stockList.forEach(st -> {
 				STOCKNAMES.add(st.getStockID());
 				CACHE.put(st.getStockID(), st);
 			});
@@ -234,9 +218,9 @@ public class UserService {
 	 */
 	@PostConstruct
 	public void addRecordsToCache() {
-		log.info("Going to update cache: " + STOCKNAMES.size());
-		updateChache();
-		log.info("Updated cache to: " + STOCKNAMES.size());
+		log.info("Going to update cache: {}" , STOCKNAMES.size());
+		updateCache();
+		log.info("Updated cache to: {}" , STOCKNAMES.size());
 	}
 
 	/**
@@ -246,9 +230,9 @@ public class UserService {
 	 * @return the user
 	 */
 	public User getUser(String userId) {
-		String url = seBaseUrl + seGetUser + userId;
-		User user = restTemplate.getForObject(url, User.class);
-		log.info("Get user for {} result: {}" + userId, user);
+
+		User user=userServiceProxy.getUser(userId);
+		log.info("Get user for {} result: {}" , userId, user);
 		return user;
 
 	}
@@ -260,8 +244,25 @@ public class UserService {
 	 * @return the boolean
 	 */
 	public Boolean disable(String userId) {
-		String url = seBaseUrl + seDisableUser + userId;
-		return restTemplate.getForObject(url, Boolean.class);
+		return userServiceProxy.disableUser(userId);
+	}
 
+	/**
+	 * Purchase stocks.
+	 *
+	 * @param stockId the stock id
+	 * @param name 
+	 * @param numberOfStocks the number of stocks
+	 * @param userId the user id
+	 * @return the transaction
+	 */
+	public Transaction purchaseStocks(String stockId, String name, Integer numberOfStocks, String userId) {
+		Transaction t= new Transaction();
+		t.setStockId(stockId);
+		t.setCount(numberOfStocks);
+		t.setUserId(userId);
+		t.setStockName(name);
+		t.setStatus(Status.STOCK_AWAITED);
+		return userServiceProxy.saveTransaction(t);
 	}
 }

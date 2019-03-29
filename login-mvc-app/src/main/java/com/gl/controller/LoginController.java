@@ -1,21 +1,24 @@
 package com.gl.controller;
 
 import java.security.Principal;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gl.constants.AppConstants;
+import com.gl.feign.user.UserServiceProxy;
 import com.gl.model.User;
 import com.gl.model.User2;
-import com.gl.service.UserService;
+import com.gl.model.UserResponse;
 
 /**
  * The login controller.
@@ -25,9 +28,25 @@ import com.gl.service.UserService;
 @Controller
 public class LoginController {
 
-	/** The user service. */
+	/** The Constant ERROR_USER. */
+	private static final String ERROR_USER = "error.user";
+
+	/** The Constant EMAIL. */
+	private static final String EMAIL = "email";
+
+	/** The Constant REGISTRATION. */
+	private static final String REGISTRATION = "registration";
+
+	/** The Constant log. */
+	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
+	/** The b crypt password encoder. */
 	@Autowired
-	private UserService userService;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	/** The user service proxy. */
+	@Autowired
+	private UserServiceProxy userServiceProxy;
 
 	/**
 	 * Login.
@@ -35,14 +54,14 @@ public class LoginController {
 	 * @param principal the principal
 	 * @return the model and view
 	 */
-	@RequestMapping(value = { "/", "/login" ,"user/login" }, method = RequestMethod.GET)
+	@GetMapping(value = { "/", "/login", "user/login" })
 	public ModelAndView login(Principal principal) {
-		
+
 		ModelAndView modelAndView = new ModelAndView();
-		if(principal!=null && principal.getName()!=null)
+		if (principal != null && principal.getName() != null)
 			modelAndView.setViewName("redirect:user/home");
 		else
-		modelAndView.setViewName("login");
+			modelAndView.setViewName("login");
 		return modelAndView;
 	}
 
@@ -52,13 +71,13 @@ public class LoginController {
 	 * @param principal the principal
 	 * @return the model and view
 	 */
-	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	@GetMapping(value = "/registration")
 	public ModelAndView registration(Principal principal) {
 		ModelAndView modelAndView = new ModelAndView();
 		User user = new User();
 		modelAndView.addObject("user", user);
-		modelAndView.setViewName("registration");
-		if(principal!=null && principal.getName()!=null)
+		modelAndView.setViewName(REGISTRATION);
+		if (principal != null && principal.getName() != null)
 			modelAndView.setViewName("redirect:user/home");
 		return modelAndView;
 	}
@@ -66,30 +85,36 @@ public class LoginController {
 	/**
 	 * Creates the new user.
 	 *
-	 * @param user the user
+	 * @param user          the user
 	 * @param bindingResult the binding result
 	 * @return the model and view
 	 */
-	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	@PostMapping(value = "/registration")
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
-		Optional<User> userExists = userService.findUserByEmail("USER::" + user.getEmail());
-		if (userExists.isPresent()) {
-			bindingResult.rejectValue("email", "error.user",
-					"There is already a user registered with the email provided");
+		User userExists = userServiceProxy.getUser("USER::" + user.getEmail());
+		if (userExists != null && userExists.getError() == null) {
+			bindingResult.rejectValue(EMAIL, ERROR_USER, "There is already a user registered with the email provided");
 		}
 		if (!bindingResult.hasErrors()) {
 
 			user.setId("USER::" + user.getEmail());
-			userService.saveUser(user);
-			modelAndView.addObject("successMessage", "User has been registered successfully");
-			modelAndView.addObject("user", new User());
-			modelAndView.setViewName("registration");
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			user.setActive(Boolean.TRUE);
+			user.setAccountBalance(100000.00);
+			UserResponse u = userServiceProxy.signup(user);
+			if (u.getError() == null) {
+				modelAndView.addObject("successMessage", "User has been registered successfully");
+				modelAndView.addObject("user", new User());
+				modelAndView.setViewName(REGISTRATION);
+			} else {
+				bindingResult.rejectValue(EMAIL, ERROR_USER, u.getError().getMessage());
+			}
 		}
-		modelAndView.setViewName("registration");
+		modelAndView.setViewName(REGISTRATION);
 		return modelAndView;
 	}
-	
+
 	/**
 	 * Edits the user.
 	 *
@@ -98,50 +123,53 @@ public class LoginController {
 	 */
 	@GetMapping("/edit")
 	public ModelAndView editUser(Principal principal) {
-		ModelAndView mv= new ModelAndView();
-		User user=userService.getUser(principal.getName());
+		ModelAndView mv = new ModelAndView();
+		User user = userServiceProxy.getUser(AppConstants.USER_PREFIX + principal.getName());
 		mv.addObject("user", user);
 		mv.setViewName("edit");
-		 return mv;
+		return mv;
 	}
-	
+
 	/**
 	 * Edits the user.
 	 *
-	 * @param user the user
+	 * @param user          the user
 	 * @param bindingResult the binding result
-	 * @param principal the principal
+	 * @param principal     the principal
 	 * @return the model and view
 	 */
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@PostMapping(value = "/edit")
 	public ModelAndView editUser(@Valid User2 user, BindingResult bindingResult, Principal principal) {
-		System.out.println("Principal USer: "+ principal.getName()+", user's user: "+ user.getEmail());
-		//user.setEmail(principal.getName());
+		log.info("editUser {}", principal.getName());
 		ModelAndView modelAndView = new ModelAndView();
-		Optional<User> userExists = userService.findUserByEmail( principal.getName());
-		
-		  if (!userExists.isPresent()) { bindingResult.rejectValue("email",
-		  "error.user", "Cannot find this user");
-		  }
-		  User u= userExists.get();
-		if (!bindingResult.hasErrors()) {
-				u= userExists.get();
-				u.setLastName(user.getLastName());
-				u.setName(user.getName());
-				u.setPassword(user.getPassword());
-			userService.saveUser(u);
-			modelAndView.addObject("successMessage", "User has been Edited successfully");
-			modelAndView.setViewName("edit");
-			modelAndView.addObject("user", u);
+		User userExists = userServiceProxy.getUser(AppConstants.USER_PREFIX + principal.getName());
+
+		if (userExists == null) {
+			bindingResult.rejectValue(EMAIL, ERROR_USER, "Cannot find this user");
 		}
-		else {
-			user.setEmail(u.getEmail());
+
+		if (userExists != null && userExists.getError() == null) {
+			userExists.setLastName(user.getLastName());
+			userExists.setName(user.getName());
+			userExists.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			userExists.setId(AppConstants.USER_PREFIX + principal.getName());
+			userExists.setAccountBalance(user.getAccountBalance());
+			UserResponse ur = userServiceProxy.update(userExists);
+			if (ur.getError() == null) {
+				modelAndView.addObject("successMessage", "User has been Edited successfully");
+			} else {
+				bindingResult.rejectValue(EMAIL, ERROR_USER, ur.getErrorMsg());
+			}
+			modelAndView.setViewName("edit");
+			modelAndView.addObject("user", userExists);
+		} else {
+			user.setEmail(userExists.getEmail());
 			modelAndView.addObject("user", user);
 		}
 		modelAndView.setViewName("edit");
 		return modelAndView;
 	}
-	
+
 	/**
 	 * Delete account.
 	 *
@@ -150,14 +178,12 @@ public class LoginController {
 	 */
 	@GetMapping("/delete")
 	public ModelAndView deleteAccount(Principal principal) {
-		ModelAndView mv= new ModelAndView();
-		Boolean flag =userService.disable(principal.getName());
-		if(flag)
-		mv.setViewName("redirect:logout");
+		ModelAndView mv = new ModelAndView();
+		Boolean flag = userServiceProxy.disableUser(AppConstants.USER_PREFIX + principal.getName());
+		if (flag)
+			mv.setViewName("redirect:logout");
 		else
 			mv.setViewName("redirect:login");
 		return mv;
 	}
 }
-
-

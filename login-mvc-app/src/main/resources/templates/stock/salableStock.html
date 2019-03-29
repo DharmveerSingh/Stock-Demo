@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="${title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+function purchase(id, price, count, name){
+	console.log(id+","+ price+", "+ count);
+	post('/user/buyStocks', id,price,count,name,);
+}
+
+function post(path, id, price, count,name) {
+	var count = prompt("Please enter number of stocks you want to buy!!", "00");
+	console.log(id+","+ price+", "+ count);
+	if(count !=null && count > 0){
+	 var form = {
+			 id: id,
+			 price:price,
+			 count:count,
+			 name: name
+	        }
+
+	        $('#target').html('sending..');
+
+	        $.ajax({
+	            url: '/user/buyStocks',
+	            type: 'post',
+	            dataType: 'json',
+	            contentType: 'application/json',
+	            success: function (data) {
+	      //      	alert("Success: "+data);
+	                $('#target').html(data.msg);
+	            },
+	            error:function (error,data) {
+//	            	debugger;
+	            	id=error.responseText;
+	    //        	alert("id is: "+id);
+	            	window.location.href = '/user/viewTransaction?transactionId='+id;
+	                //$('#target').html(data);
+	            },
+	            data: JSON.stringify(form)
+	        });
+}
+}
+</script>
+</head>
+
+<body>
+
+		<div class="panel panel-primary">
+	
+			<div class="panel-heading" style="text-align: center;">
+				<span style="font-size: xx-large" th:utext="${title}"></span>
+			</div>
+			<div>
+			
+
+			<div class="panel-body">
+				<div class="table-responsive">
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Stock Symbol</th>
+								<th>Price per unit</th>
+								<th>Available</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${stocks.empty}">
+								<td colspan="2">No History Available</td>
+							</tr>
+							<tr th:each="stock, iStat: ${stocks}"
+								th:style="${iStat.odd}? 'font-weight: bold;'"
+								th:alt-title="${iStat.even}? 'odd' : 'even'">
+								<td th:text="${stock.stockSymbol}" />
+								<td th:text="${stock.unitPrice}" />
+								<td th:text="${stock.totalCount}" />
+								<td>
+									<button type="button" class="btn btn-primary"
+										th:attr="onclick=|purchase('${stock.id}', '${stock.unitPrice}','${stock.totalCount}','${stock.stockSymbol}')|">Purchase</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="target"></div>
+		</div>
+</body>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="${title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+ <meta http-equiv="refresh" content="1">
+</head>
+
+<body>
+
+		<div class="panel panel-primary">
+	
+			<div class="panel-heading" style="text-align: center;">
+				<span style="font-size: xx-large" th:utext="${title}"></span>
+			</div>
+			<div>
+			<div>
+			<a href="/user/viewTransactions">Click here to view all transactions</a>
+			</div>			
+
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Transaction Id</th>
+								<th>Stock Symbol</th>
+
+								<th>Price per unit</th>
+								<th>Units</th>
+
+								<th>Total Amount</th>
+								<th>Status</th>
+
+								<th>Error</th>
+								<th>Remarks</th>
+								
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+							<td th:text="${respon.id}" />
+							<td th:text="${respon.stockName}" />
+							
+							<td th:text="${respon.stockPrice}" />
+							<td th:text="${respon.count}" />
+
+							<td th:text="${respon.bill}" />
+							<td th:text="${respon.status}" />
+
+							<td th:text="${respon.error}" />
+							<td th:text="${respon.errorMsg}" />
+						
+							</tr>
+						</tbody>
+						
+					</table>
+				</div>
+			</div>
+		</div>
+		</div>
+</body>
