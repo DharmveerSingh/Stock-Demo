@@ -40,12 +40,6 @@ public class KafkaResultListener {
 		log.error("Recieved Kafka buy stocks as: {}",transaction);
 		stockService.purchase(transaction).map(tr -> {
 			log.info("Sending to topic buyResult: {}",transaction);
-			try {
-				//intentionally to show the change in transaction status
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			kafka.sentBuyResult(transaction);
 			return tr;
 		}).subscribe();

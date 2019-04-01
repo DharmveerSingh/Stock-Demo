@@ -1,6 +1,5 @@
 package ca.gl.user.kafka.listener;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,14 +111,4 @@ public class KafkaResultListener {
 		}).subscribe();
 	}
 
-	/**
-	 * Rollback.
-	 *
-	 * @param transaction the transaction
-	 * @return the mono<? extends user>
-	 */
-	private Mono<? extends User> rollback(Transaction transaction) {
-		kafka.sentRollbackStocks(transaction);
-		return Mono.empty();
-	}
 }
