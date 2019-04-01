@@ -11,12 +11,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  * The Class UserStockList.
  */
 @Document
+
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
@@ -30,13 +35,31 @@ import lombok.ToString;
  * @param userStocks the user stocks
  * @param count the count
  */
+
+/**
+ * Instantiates a new user stock list.
+ *
+ * @param userStockId the user stock id
+ * @param userStocks the user stocks
+ * @param count the count
+ * @param error the error
+ */
 @AllArgsConstructor
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#toString()
  */
 @ToString
 @JsonDeserialize 
+
+/**
+ * Instantiates a new user stock list.
+ */
+@NoArgsConstructor
 public class UserStockList {
 	
 	/** The user stock id. */
@@ -52,5 +75,8 @@ public class UserStockList {
 	/** The count. */
 	@Field
 	private Integer count;
+	
+	/** The error. */
+	private Throwable error;
 	
 }

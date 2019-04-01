@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="${title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+</head>
+
+<body>
+
+		<div class="panel panel-primary">
+	
+			<div class="panel-heading" style="text-align: center;">
+				<span style="font-size: xx-large" th:utext="${title}"></span>
+			</div>
+			<div>
+			
+
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Number</th>
+								<th>Stock Symbol</th>
+								<th>Price per unit</th>
+								<th>Units</th>
+								<th>Total Amount</th>
+								<th>Date</th>
+								<th>Status</th>
+								<th>Error</th>
+								<th>Remarks</th>
+								
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:if="${response.empty}">
+            					<td colspan="2"> You have'nt purchased anything yet</td>
+        					</tr>
+							<tr th:each="transaction, iStat: ${response}"
+								th:style="${iStat.odd}? 'font-weight: bold;'"
+								th:alt-title="${iStat.even}? 'odd' : 'even'">
+							<td th:text="${iStat.count}" />
+							<td th:text="${transaction.stockName}" />
+							
+							<td th:text="${transaction.stockPrice}" />
+							<td th:text="${transaction.count}" />
+							<td th:text="${transaction.bill}" />
+							<td th:text="${transaction.created}" />
+							<td th:text="${transaction.status}" />
+							<td th:text="${transaction.error}" />
+							<td th:text="${transaction.errorMsg}" />
+						
+							</tr>
+							
+							</tbody>
+					
+					</table>
+				</div>
+			</div>
+		</div>
+		</div>
+</body>

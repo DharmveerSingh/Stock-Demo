@@ -27,7 +27,25 @@ import lombok.ToString;
  *
  * @param roles the new roles
  */
+
+/**
+ * Sets the roles.
+ *
+ * @param roles the new roles
+ */
 @Data
+
+/**
+ * Instantiates a new user 2.
+ *
+ * @param id the id
+ * @param email the email
+ * @param name the name
+ * @param lastName the last name
+ * @param active the active
+ * @param password the password
+ * @param roles the roles
+ */
 
 /**
  * Instantiates a new user 2.
@@ -45,12 +63,24 @@ import lombok.ToString;
 /**
  * Instantiates a new user 2.
  */
+
+/**
+ * Instantiates a new user 2.
+ */
 @NoArgsConstructor
 
 /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
  */
+
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 @EqualsAndHashCode
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#toString()
@@ -90,5 +120,8 @@ public class User2 {
 	/** The roles. */
 	@Field("roles")
 	List<String> roles;
+	
+	@Field
+	private Double accountBalance;
 
 }

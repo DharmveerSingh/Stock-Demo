@@ -31,10 +31,19 @@
 	
 
 		<div class="panel-group" style="margin-top: 40px">
+			
+				<div class="panel panel-primary">
+				<div >
+			<a href="/user/buyStocksView">Buy some stocks</a>
+				</div>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<span th:utext="${Welcome}"></span>
+					<span >, Account Balance: </span>
+					<span th:utext="${balance}"></span>
 				</div>
+			
+				
 				<div class="panel-body">
 					<img th:src="@{/images/beer.jpg}"
 						class="img-responsive center-block" width="400" height="400"
@@ -163,7 +172,7 @@
 			      self.totalSeconds += 1;
 			   location.reload();
  				console.log("tick tock");
-			    }, 1000);
+			    }, 1000000);
 			  },
 
 			  pause: function () {

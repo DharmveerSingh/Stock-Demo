@@ -4,10 +4,17 @@ import java.text.DecimalFormat;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import ca.gl.fileUploader.model.Stock;
+import ca.gl.fus.model.Stock;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+/**
+ * The Class UserStockResponse.
+ */
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
@@ -17,8 +24,16 @@ import lombok.ToString;
 /* (non-Javadoc)
  * @see java.lang.Object#toString()
  */
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 @ToString
 @JsonDeserialize
+
+/**
+ * Instantiates a new user stock response.
+ */
 
 /**
  * Instantiates a new user stock response.

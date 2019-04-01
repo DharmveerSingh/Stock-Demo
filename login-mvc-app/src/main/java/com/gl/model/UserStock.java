@@ -9,12 +9,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
  * The Class UserStock.
  */
 @Document
+
+/* (non-Javadoc)
+ * @see java.lang.Object#hashCode()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#hashCode()
@@ -32,13 +37,35 @@ import lombok.ToString;
  * @param currentPrice the current price
  * @param investment the investment
  */
+
+/**
+ * Instantiates a new user stock.
+ *
+ * @param userStockId the user stock id
+ * @param userId the user id
+ * @param stockID the stock ID
+ * @param stockSymbol the stock symbol
+ * @param lockedPrice the locked price
+ * @param currentPrice the current price
+ * @param investment the investment
+ * @param error the error
+ */
 @AllArgsConstructor
+
+/* (non-Javadoc)
+ * @see java.lang.Object#toString()
+ */
 
 /* (non-Javadoc)
  * @see java.lang.Object#toString()
  */
 @ToString
 @JsonDeserialize
+
+/**
+ * Instantiates a new user stock.
+ */
+@NoArgsConstructor
 public class UserStock {
 
 	/** The user stock id. */
@@ -72,5 +99,8 @@ public class UserStock {
 	@Field
 	@NotEmpty
 	private Double investment;
+
+	/** The error. */
+	private Throwable error;
 	
 }

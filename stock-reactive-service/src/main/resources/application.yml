@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: srs
+
+server:
+  port: ${PORT:0}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

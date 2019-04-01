@@ -3,37 +3,24 @@ package com.gl.service;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import ca.gl.fileUploader.constant.AppConstants;
-import ca.gl.fileUploader.model.StockHistory;
-import ca.gl.fileUploader.model.StockHistoryList;
+import com.gl.feign.stock.StockServiceProxy;
+
+import ca.gl.fus.constant.AppConstants;
+import ca.gl.fus.model.StockHistory;
+import ca.gl.fus.model.StockHistoryList;
 
 /**
  * The Class StockService.
  */
 @Service
 public class StockService {
-
-	/** The se base url. */
-	@Value("${stock.exchange.baseURL}")
-	private String seBaseUrl;
-
-	/** The se today history. */
-	@Value("${stock.exchange.stock.today.history}")
-	private String seTodayHistory;
-
-	/** The se weeks history. */
-	@Value("${stock.exchange.stock.week.history}")
-	private String seWeeksHistory;
-	
-	/** The rest template. */
+		
+	/** The stock service proxy. */
 	@Autowired
-	private RestTemplate restTemplate;
-
+	private StockServiceProxy stockServiceProxy;
+	
 	/**
 	 * Get todays history by stock symbol.
 	 *
@@ -41,20 +28,16 @@ public class StockService {
 	 * @return the todays history
 	 */
 	public StockHistoryList getTodaysHistory(String stockSymbol) {
-		String url = seBaseUrl + seTodayHistory + AppConstants.REGULAR_HISTORY + stockSymbol;
-		ResponseEntity<StockHistoryList> todaysHistoryEntity = restTemplate.getForEntity(url, StockHistoryList.class);
-		StockHistoryList response;
-
-		if (todaysHistoryEntity.hasBody())
-			response = todaysHistoryEntity.getBody();
-		else {
-			response = new StockHistoryList();
-			response.setStockSymbol(stockSymbol);
-			response.setCount(0);
-			response.setStockId(AppConstants.LATEST + stockSymbol);
-			response.setStockList(new ArrayList<StockHistory>());
+		StockHistoryList todaysHistory=stockServiceProxy.getTodaysHistory(AppConstants.REGULAR_HISTORY+stockSymbol);
+		
+		if(todaysHistory== null) {
+			todaysHistory = new StockHistoryList();
+			todaysHistory.setStockSymbol(stockSymbol);
+			todaysHistory.setCount(0);
+			todaysHistory.setStockId(AppConstants.LATEST + stockSymbol);
+			todaysHistory.setStockList(new ArrayList<StockHistory>());
 		}
-		return response;
+		return todaysHistory;
 	}
 
 	/**
@@ -64,20 +47,16 @@ public class StockService {
 	 * @return the weeks history
 	 */
 	public StockHistoryList getWeeksHistory(String stockSymbol) {
-		String url = seBaseUrl + seWeeksHistory + AppConstants.REGULAR_HISTORY + stockSymbol;
-		ResponseEntity<StockHistoryList> weeksHistoryEntity = restTemplate.getForEntity(url, StockHistoryList.class);
-		StockHistoryList response;
+		StockHistoryList weeksHistoryEntity = stockServiceProxy.getWeeksHistory(AppConstants.REGULAR_HISTORY + stockSymbol);
 
-		if (weeksHistoryEntity.hasBody())
-			response = weeksHistoryEntity.getBody();
-		else {
-			response = new StockHistoryList();
-			response.setStockSymbol(stockSymbol);
-			response.setCount(0);
-			response.setStockId(AppConstants.LATEST + stockSymbol);
-			response.setStockList(new ArrayList<StockHistory>());
+		if (weeksHistoryEntity== null) {
+			weeksHistoryEntity = new StockHistoryList();
+			weeksHistoryEntity.setStockSymbol(stockSymbol);
+			weeksHistoryEntity.setCount(0);
+			weeksHistoryEntity.setStockId(AppConstants.LATEST + stockSymbol);
+			weeksHistoryEntity.setStockList(new ArrayList<StockHistory>());
 		}
-		return response;
+		return weeksHistoryEntity;
 	}
 
 }

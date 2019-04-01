@@ -14,7 +14,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import ca.gl.fileUploader.model.Stock;
+import ca.gl.fus.model.Stock;
 
 /**
  * the kafka consumer config.
